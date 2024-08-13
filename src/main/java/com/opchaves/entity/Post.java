@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.bson.types.ObjectId;
 
+import com.opchaves.web.dto.PostResponse;
 import com.opchaves.web.dto.UpdatePost;
 
 import io.quarkus.mongodb.panache.common.MongoEntity;
@@ -37,7 +38,15 @@ public class Post extends ReactivePanacheMongoEntity {
     }).call(post -> post.persistOrUpdate());
   }
 
-  public static Multi<Post> streamAllPosts() {
-    return Post.streamAll();
+  public static Multi<PostResponse> streamAllPosts() {
+    return Post.<Post>streamAll().onItem().transform(p -> {
+      var r = new PostResponse();
+      r.id = p.id.toString();
+      r.title = p.title;
+      r.content = p.content;
+      r.author = p.author;
+      r.creationDate = p.creationDate.toString();
+      return r;
+    });
   }
 }

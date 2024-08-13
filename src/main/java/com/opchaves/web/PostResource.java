@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.opchaves.entity.Post;
 import com.opchaves.web.dto.CreatePost;
+import com.opchaves.web.dto.PostResponse;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
@@ -21,7 +22,7 @@ public class PostResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Multi<Post> list() {
+  public Multi<PostResponse> list() {
     return Post.streamAllPosts();
   }
 

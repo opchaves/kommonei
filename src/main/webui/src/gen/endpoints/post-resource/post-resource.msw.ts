@@ -13,35 +13,8 @@ export const getGetApiPostsResponseMock = (): Post[] =>
   Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
     author: faker.helpers.arrayElement([faker.word.sample(), undefined]),
     content: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    creationDate: faker.helpers.arrayElement([
-      `${faker.date.past().toISOString().split('.')[0]}Z`,
-      undefined,
-    ]),
-    id: faker.helpers.arrayElement([
-      {
-        counter: faker.helpers.arrayElement([
-          faker.number.int({ min: undefined, max: undefined }),
-          undefined,
-        ]),
-        date: faker.helpers.arrayElement([
-          faker.date.past().toISOString().split('T')[0],
-          undefined,
-        ]),
-        randomValue1: faker.helpers.arrayElement([
-          faker.number.int({ min: undefined, max: undefined }),
-          undefined,
-        ]),
-        randomValue2: faker.helpers.arrayElement([
-          faker.number.int({ min: undefined, max: undefined }),
-          undefined,
-        ]),
-        timestamp: faker.helpers.arrayElement([
-          faker.number.int({ min: undefined, max: undefined }),
-          undefined,
-        ]),
-      },
-      undefined,
-    ]),
+    creationDate: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    id: faker.helpers.arrayElement([faker.word.sample(), undefined]),
     title: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   }));
 

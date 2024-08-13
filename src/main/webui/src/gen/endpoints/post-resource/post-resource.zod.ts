@@ -8,19 +8,11 @@
 import { z as zod } from 'zod';
 
 export const getApiPostsResponseItem = zod.object({
-  id: zod
-    .object({
-      timestamp: zod.number().optional(),
-      counter: zod.number().optional(),
-      randomValue1: zod.number().optional(),
-      randomValue2: zod.number().optional(),
-      date: zod.string().date().optional(),
-    })
-    .optional(),
+  id: zod.string().optional(),
   title: zod.string().optional(),
   content: zod.string().optional(),
   author: zod.string().optional(),
-  creationDate: zod.string().datetime().optional(),
+  creationDate: zod.string().optional(),
 });
 export const getApiPostsResponse = zod.array(getApiPostsResponseItem);
 

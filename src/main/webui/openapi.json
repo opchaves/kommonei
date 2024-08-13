@@ -120,10 +120,10 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
+                  "loggerName" : { },
                   "loggerLevel" : {
                     "$ref" : "#/components/schemas/LoggerLevel"
-                  },
-                  "loggerName" : { }
+                  }
                 }
               }
             }
@@ -349,44 +349,12 @@
           }
         }
       },
-      "Date" : {
-        "format" : "date",
-        "type" : "string",
-        "example" : "2022-03-10"
-      },
-      "LocalDateTime" : {
-        "format" : "date-time",
-        "type" : "string",
-        "example" : "2022-03-10T12:15:50"
-      },
-      "ObjectId" : {
-        "type" : "object",
-        "properties" : {
-          "timestamp" : {
-            "format" : "int32",
-            "type" : "integer"
-          },
-          "counter" : {
-            "format" : "int32",
-            "type" : "integer"
-          },
-          "randomValue1" : {
-            "format" : "int32",
-            "type" : "integer"
-          },
-          "randomValue2" : {
-            "type" : "integer"
-          },
-          "date" : {
-            "$ref" : "#/components/schemas/Date"
-          }
-        }
-      },
       "Post" : {
+        "description" : "Entity that represents a post.",
         "type" : "object",
         "properties" : {
           "id" : {
-            "$ref" : "#/components/schemas/ObjectId"
+            "type" : "string"
           },
           "title" : {
             "type" : "string"
@@ -398,7 +366,7 @@
             "type" : "string"
           },
           "creationDate" : {
-            "$ref" : "#/components/schemas/LocalDateTime"
+            "type" : "string"
           }
         }
       },
@@ -409,13 +377,13 @@
       "LoggerInfo" : {
         "type" : "object",
         "properties" : {
-          "configuredLevel" : {
-            "$ref" : "#/components/schemas/LoggerLevel"
-          },
           "name" : {
             "type" : "string"
           },
           "effectiveLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
+          },
+          "configuredLevel" : {
             "$ref" : "#/components/schemas/LoggerLevel"
           }
         }

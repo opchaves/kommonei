@@ -5,13 +5,14 @@
  * Quarkus monorepo demonstrating Panache Mongo REST server with AntD UI client
  * OpenAPI spec version: 1.0.0
  */
-import type { LocalDateTime } from './localDateTime';
-import type { ObjectId } from './objectId';
 
+/**
+ * Entity that represents a post.
+ */
 export interface Post {
   author?: string;
   content?: string;
-  creationDate?: LocalDateTime;
-  id?: ObjectId;
+  creationDate?: string;
+  id?: string;
   title?: string;
 }
