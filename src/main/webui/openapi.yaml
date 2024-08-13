@@ -305,10 +305,10 @@ components:
       properties:
         configuredLevel:
           $ref: "#/components/schemas/LoggerLevel"
-        effectiveLevel:
-          $ref: "#/components/schemas/LoggerLevel"
         name:
           type: string
+        effectiveLevel:
+          $ref: "#/components/schemas/LoggerLevel"
     HealthCheckResponse:
       type: object
       properties:
