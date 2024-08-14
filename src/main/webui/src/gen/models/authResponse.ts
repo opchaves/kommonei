@@ -6,10 +6,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface CreatePost {
-  author?: string;
-  /** @minLength 1 */
-  content: string;
-  /** @minLength 1 */
-  title: string;
+export interface AuthResponse {
+  token: string;
 }

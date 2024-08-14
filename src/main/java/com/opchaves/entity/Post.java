@@ -1,6 +1,7 @@
 package com.opchaves.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 
@@ -47,6 +48,12 @@ public class Post extends ReactivePanacheMongoEntity {
       r.author = p.author;
       r.creationDate = p.creationDate.toString();
       return r;
+    });
+  }
+
+  public static Uni<List<PostResponse>> listPosts() {
+    return Post.<Post>listAll().onItem().transform(posts -> {
+      return PostResponse.fromList(posts);
     });
   }
 }

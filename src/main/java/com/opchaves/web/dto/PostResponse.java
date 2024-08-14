@@ -1,6 +1,13 @@
 package com.opchaves.web.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+import com.opchaves.entity.Post;
+
+import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntityBase;
 
 @Schema(name = "Post", description = "Entity that represents a post.")
 public class PostResponse {
@@ -19,5 +26,19 @@ public class PostResponse {
     this.content = content;
     this.author = author;
     this.creationDate = creationDate;
+  }
+
+  public static List<PostResponse> fromList(List<Post> posts) {
+    var result = new ArrayList<PostResponse>();
+    for (final Post post : posts) {
+      result.add(
+          new PostResponse(
+              post.id.toString(),
+              post.title,
+              post.content,
+              post.author,
+              post.creationDate.toString()));
+    }
+    return result;
   }
 }

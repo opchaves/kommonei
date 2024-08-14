@@ -26,16 +26,21 @@ export const routes: Route[] = [
   },
 ];
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      lazy: () => import('./layout').then(({ Layout }) => ({ Component: Layout })),
+      children: routes.map((route) => ({
+        path: route.path,
+        lazy: () => route.element.then((Component) => ({ Component })),
+      })),
+    },
+  ],
   {
-    path: '/',
-    lazy: () => import('./layout').then(({ Layout }) => ({ Component: Layout })),
-    children: routes.map((route) => ({
-      path: route.path,
-      lazy: () => route.element.then((Component) => ({ Component })),
-    })),
+    basename: '/app',
   },
-]);
+);
 
 export const Router = () => {
   return <RouterProvider router={router} fallbackElement={<Spin spinning />} />;

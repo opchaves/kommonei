@@ -4,7 +4,7 @@ import com.opchaves.entity.Post;
 
 import jakarta.validation.constraints.NotEmpty;
 
-public class CreatePost {
+public class PostRequest {
 
   @NotEmpty
   public String title;
@@ -13,7 +13,7 @@ public class CreatePost {
   public String content;
   public String author;
 
-  public CreatePost() {
+  public PostRequest() {
   }
 
   public Post toEntity() {

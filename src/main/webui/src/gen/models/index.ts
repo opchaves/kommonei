@@ -6,7 +6,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export * from './createPost';
+export * from './authRequest';
+export * from './authResponse';
 export * from './healthCheckResponse';
 export * from './healthCheckResponseData';
 export * from './healthCheckStatus';
@@ -14,4 +15,9 @@ export * from './loggerInfo';
 export * from './loggerLevel';
 export * from './loggingManagerGetAllParams';
 export * from './loggingManagerUpdateBody';
+export * from './loginResponse';
 export * from './post';
+export * from './postRequest';
+export * from './role';
+export * from './userRequest';
+export * from './userResponse';

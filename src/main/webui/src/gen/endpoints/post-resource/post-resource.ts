@@ -19,7 +19,7 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import type { CreatePost, Post } from '../../models';
+import type { Post, PostRequest } from '../../models';
 import { useAxiosMutator } from '../../../AxiosMutator';
 import type { ErrorType } from '../../../AxiosMutator';
 
@@ -130,12 +130,12 @@ export const usePostApiPostsHook = () => {
   const postApiPosts = useAxiosMutator<unknown>();
 
   return useCallback(
-    (createPost: CreatePost) => {
+    (postRequest: PostRequest) => {
       return postApiPosts({
         url: `/api/posts`,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        data: createPost,
+        data: postRequest,
       });
     },
     [postApiPosts],
@@ -149,13 +149,13 @@ export const usePostApiPostsMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof usePostApiPostsHook>>>,
     TError,
-    { data: CreatePost },
+    { data: PostRequest },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<ReturnType<typeof usePostApiPostsHook>>>,
   TError,
-  { data: CreatePost },
+  { data: PostRequest },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
@@ -164,7 +164,7 @@ export const usePostApiPostsMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<ReturnType<typeof usePostApiPostsHook>>>,
-    { data: CreatePost }
+    { data: PostRequest }
   > = (props) => {
     const { data } = props ?? {};
 
@@ -177,20 +177,20 @@ export const usePostApiPostsMutationOptions = <
 export type PostApiPostsMutationResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof usePostApiPostsHook>>>
 >;
-export type PostApiPostsMutationBody = CreatePost;
+export type PostApiPostsMutationBody = PostRequest;
 export type PostApiPostsMutationError = ErrorType<unknown>;
 
 export const usePostApiPosts = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof usePostApiPostsHook>>>,
     TError,
-    { data: CreatePost },
+    { data: PostRequest },
     TContext
   >;
 }): UseMutationResult<
   Awaited<ReturnType<ReturnType<typeof usePostApiPostsHook>>>,
   TError,
-  { data: CreatePost },
+  { data: PostRequest },
   TContext
 > => {
   const mutationOptions = usePostApiPostsMutationOptions(options);

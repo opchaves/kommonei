@@ -12,7 +12,7 @@ You can run your application in dev mode that enables live coding using:
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+> **_NOTE:_** Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
 ## Packaging and running the application
 
@@ -58,6 +58,8 @@ If you want to learn more about building native executables, please consult <htt
 - MongoDB with Panache ([guide](https://quarkus.io/guides/mongodb-panache)): Simplify your persistence code for MongoDB via the active record or the repository pattern
 - SmallRye OpenAPI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Document your REST APIs with OpenAPI - comes with Swagger UI
 - REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
+- SmallRye JWT ([guide](https://quarkus.io/guides/security-jwt)): SmallRye JWT is a library for implementing the Eclipse MicroProfile JWT RBAC
+- [Generating keys using OpenSSL](https://developers.yubico.com/PIV/Guides/Generating_keys_using_OpenSSL.html)
 
 ## Provided Code
 

@@ -35,12 +35,85 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePost"
+              $ref: "#/components/schemas/PostRequest"
       responses:
         "200":
           description: OK
           content:
             application/json: {}
+  /api/secured:
+    get:
+      tags:
+      - Token Secured Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+  /api/secured/allowed:
+    get:
+      tags:
+      - Token Secured Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme: []
+  /api/users/login:
+    post:
+      tags:
+      - User Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json: {}
+  /api/users/register:
+    post:
+      tags:
+      - User Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json: {}
+  /api/users/{id}:
+    get:
+      tags:
+      - User Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
   /hello:
     get:
       tags:
@@ -232,20 +305,57 @@ paths:
                 $ref: "#/components/schemas/HealthCheckResponse"
 components:
   schemas:
-    CreatePost:
+    AuthRequest:
       required:
-      - title
-      - content
+      - email
+      - password
       type: object
       properties:
-        title:
-          minLength: 1
+        email:
+          description: User email
+          pattern: \S
           type: string
-        content:
-          minLength: 1
+          example: jonhdoe@example.com
+        password:
+          description: "Password must have at least 10 characters, one uppercase letter,\
+            \ one lowercase letter, one number and one special character"
+          minLength: 10
+          pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$"
           type: string
-        author:
+          example: ab39cD-$d22
+    AuthResponse:
+      required:
+      - token
+      type: object
+      properties:
+        token:
           type: string
+          example: eyJhbGci...
+    ErrorResponse:
+      required:
+      - message
+      - status
+      type: object
+      properties:
+        message:
+          description: Error message
+          type: string
+          example: Email already taken
+        status:
+          format: int32
+          description: HTTP status code
+          type: integer
+          example: 400
+    LoginResponse:
+      description: Login Response Object
+      required:
+      - token
+      type: object
+      properties:
+        token:
+          description: JWT Token
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
     Post:
       description: Entity that represents a post.
       type: object
@@ -260,6 +370,80 @@ components:
           type: string
         creationDate:
           type: string
+    PostRequest:
+      required:
+      - title
+      - content
+      type: object
+      properties:
+        title:
+          minLength: 1
+          type: string
+        content:
+          minLength: 1
+          type: string
+        author:
+          type: string
+    Role:
+      enum:
+      - USER
+      - ADMIN
+      type: string
+    UserRequest:
+      description: User Request Object
+      required:
+      - name
+      - email
+      - password
+      type: object
+      properties:
+        name:
+          description: User name
+          pattern: \S
+          type: string
+          example: John Doe
+        email:
+          description: User email
+          pattern: \S
+          type: string
+          example: jonhdoe@example.com
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+        password:
+          description: "Password must have at least 10 characters, one uppercase letter,\
+            \ one lowercase letter, one number and one special character"
+          minLength: 10
+          pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$"
+          type: string
+          example: ab39cD-$d22
+    UserResponse:
+      description: User Response Object
+      required:
+      - id
+      - name
+      - email
+      - createdAt
+      type: object
+      properties:
+        id:
+          description: User Object Id
+          type: string
+          example: 507f1f77bcf86cd799439011
+        name:
+          description: User name
+          type: string
+          example: John Doe
+        email:
+          description: User email
+          type: string
+          example: jonhdoe@example.com
+        createdAt:
+          description: User creation date
+          type: string
+          example: 2024-08-14T11:43:42.63617
     LoggerLevel:
       enum:
       - "OFF"
@@ -301,3 +485,9 @@ components:
       - DOWN
       - UP
       type: string
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: bearer
+      bearerFormat: JWT
