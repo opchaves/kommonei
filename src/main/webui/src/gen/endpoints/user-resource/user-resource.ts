@@ -5,166 +5,124 @@
  * Quarkus monorepo demonstrating Panache Mongo REST server with AntD UI client
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import type {
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
-  MutationFunction,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
-  UseMutationOptions,
-  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import type { AuthRequest, UserRequest, UserResponse } from '../../models';
+import type { UserResponse } from '../../models';
 import { useAxiosMutator } from '../../../AxiosMutator';
 import type { ErrorType } from '../../../AxiosMutator';
 
-export const usePostApiUsersLoginHook = () => {
-  const postApiUsersLogin = useAxiosMutator<unknown>();
+export const useGetApiUsersMeHook = () => {
+  const getApiUsersMe = useAxiosMutator<unknown>();
 
   return useCallback(
-    (authRequest: AuthRequest) => {
-      return postApiUsersLogin({
-        url: `/api/users/login`,
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        data: authRequest,
-      });
+    (signal?: AbortSignal) => {
+      return getApiUsersMe({ url: `/api/users/me`, method: 'GET', signal });
     },
-    [postApiUsersLogin],
+    [getApiUsersMe],
   );
 };
 
-export const usePostApiUsersLoginMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
+export const getGetApiUsersMeQueryKey = () => {
+  return [`/api/users/me`] as const;
+};
+
+export const useGetApiUsersMeQueryOptions = <
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>,
+  TError = ErrorType<void>,
 >(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof usePostApiUsersLoginHook>>>,
-    TError,
-    { data: AuthRequest },
-    TContext
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>, TError, TData>
   >;
-}): UseMutationOptions<
-  Awaited<ReturnType<ReturnType<typeof usePostApiUsersLoginHook>>>,
-  TError,
-  { data: AuthRequest },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {};
+}) => {
+  const { query: queryOptions } = options ?? {};
 
-  const postApiUsersLogin = usePostApiUsersLoginHook();
+  const queryKey = queryOptions?.queryKey ?? getGetApiUsersMeQueryKey();
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<ReturnType<typeof usePostApiUsersLoginHook>>>,
-    { data: AuthRequest }
-  > = (props) => {
-    const { data } = props ?? {};
+  const getApiUsersMe = useGetApiUsersMeHook();
 
-    return postApiUsersLogin(data);
-  };
+  const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>> = ({
+    signal,
+  }) => getApiUsersMe(signal);
 
-  return { mutationFn, ...mutationOptions };
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
 };
 
-export type PostApiUsersLoginMutationResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof usePostApiUsersLoginHook>>>
+export type GetApiUsersMeQueryResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>
 >;
-export type PostApiUsersLoginMutationBody = AuthRequest;
-export type PostApiUsersLoginMutationError = ErrorType<unknown>;
+export type GetApiUsersMeQueryError = ErrorType<void>;
 
-export const usePostApiUsersLogin = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof usePostApiUsersLoginHook>>>,
-    TError,
-    { data: AuthRequest },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<ReturnType<typeof usePostApiUsersLoginHook>>>,
-  TError,
-  { data: AuthRequest },
-  TContext
-> => {
-  const mutationOptions = usePostApiUsersLoginMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-export const usePostApiUsersRegisterHook = () => {
-  const postApiUsersRegister = useAxiosMutator<unknown>();
-
-  return useCallback(
-    (userRequest: UserRequest) => {
-      return postApiUsersRegister({
-        url: `/api/users/register`,
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        data: userRequest,
-      });
-    },
-    [postApiUsersRegister],
-  );
-};
-
-export const usePostApiUsersRegisterMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
+export function useGetApiUsersMe<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>,
+  TError = ErrorType<void>,
+>(options: {
+  query: Partial<
+    UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>, TError, TData>
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetApiUsersMe<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>,
+  TError = ErrorType<void>,
 >(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof usePostApiUsersRegisterHook>>>,
-    TError,
-    { data: UserRequest },
-    TContext
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>, TError, TData>
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetApiUsersMe<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>,
+  TError = ErrorType<void>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>, TError, TData>
   >;
-}): UseMutationOptions<
-  Awaited<ReturnType<ReturnType<typeof usePostApiUsersRegisterHook>>>,
-  TError,
-  { data: UserRequest },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {};
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
-  const postApiUsersRegister = usePostApiUsersRegisterHook();
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<ReturnType<typeof usePostApiUsersRegisterHook>>>,
-    { data: UserRequest }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return postApiUsersRegister(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type PostApiUsersRegisterMutationResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof usePostApiUsersRegisterHook>>>
->;
-export type PostApiUsersRegisterMutationBody = UserRequest;
-export type PostApiUsersRegisterMutationError = ErrorType<unknown>;
-
-export const usePostApiUsersRegister = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof usePostApiUsersRegisterHook>>>,
-    TError,
-    { data: UserRequest },
-    TContext
+export function useGetApiUsersMe<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>,
+  TError = ErrorType<void>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiUsersMeHook>>>, TError, TData>
   >;
-}): UseMutationResult<
-  Awaited<ReturnType<ReturnType<typeof usePostApiUsersRegisterHook>>>,
-  TError,
-  { data: UserRequest },
-  TContext
-> => {
-  const mutationOptions = usePostApiUsersRegisterMutationOptions(options);
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = useGetApiUsersMeQueryOptions(options);
 
-  return useMutation(mutationOptions);
-};
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const useGetApiUsersIdHook = () => {
   const getApiUsersId = useAxiosMutator<UserResponse>();
 
@@ -182,7 +140,7 @@ export const getGetApiUsersIdQueryKey = (id: string) => {
 
 export const useGetApiUsersIdQueryOptions = <
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersIdHook>>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<void>,
 >(
   id: string,
   options?: {
@@ -211,11 +169,11 @@ export const useGetApiUsersIdQueryOptions = <
 export type GetApiUsersIdQueryResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof useGetApiUsersIdHook>>>
 >;
-export type GetApiUsersIdQueryError = ErrorType<unknown>;
+export type GetApiUsersIdQueryError = ErrorType<void>;
 
 export function useGetApiUsersId<
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersIdHook>>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<void>,
 >(
   id: string,
   options: {
@@ -234,7 +192,7 @@ export function useGetApiUsersId<
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useGetApiUsersId<
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersIdHook>>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<void>,
 >(
   id: string,
   options?: {
@@ -253,7 +211,7 @@ export function useGetApiUsersId<
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useGetApiUsersId<
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersIdHook>>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<void>,
 >(
   id: string,
   options?: {
@@ -265,7 +223,7 @@ export function useGetApiUsersId<
 
 export function useGetApiUsersId<
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiUsersIdHook>>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<void>,
 >(
   id: string,
   options?: {

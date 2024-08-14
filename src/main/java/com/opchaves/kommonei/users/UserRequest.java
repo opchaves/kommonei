@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import com.opchaves.kommonei.jwt.Role;
+import com.opchaves.kommonei.auth.Role;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

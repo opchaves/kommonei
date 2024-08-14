@@ -19,26 +19,12 @@ export const getGetApiUsersIdResponseMock = (
   ...overrideResponse,
 });
 
-export const getPostApiUsersLoginMockHandler = (
+export const getGetApiUsersMeMockHandler = (
   overrideResponse?:
     | unknown
-    | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<unknown> | unknown),
+    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<unknown> | unknown),
 ) => {
-  return http.post('*/api/users/login', async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === 'function') {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
-  });
-};
-
-export const getPostApiUsersRegisterMockHandler = (
-  overrideResponse?:
-    | unknown
-    | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<unknown> | unknown),
-) => {
-  return http.post('*/api/users/register', async (info) => {
+  return http.get('*/api/users/me', async (info) => {
     await delay(1000);
     if (typeof overrideResponse === 'function') {
       await overrideResponse(info);
@@ -70,7 +56,6 @@ export const getGetApiUsersIdMockHandler = (
   });
 };
 export const getUserResourceMock = () => [
-  getPostApiUsersLoginMockHandler(),
-  getPostApiUsersRegisterMockHandler(),
+  getGetApiUsersMeMockHandler(),
   getGetApiUsersIdMockHandler(),
 ];

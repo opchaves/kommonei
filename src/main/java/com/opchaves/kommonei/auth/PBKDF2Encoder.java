@@ -1,4 +1,4 @@
-package com.opchaves.kommonei.jwt;
+package com.opchaves.kommonei.auth;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;

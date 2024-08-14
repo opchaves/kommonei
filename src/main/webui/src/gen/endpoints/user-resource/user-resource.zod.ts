@@ -7,39 +7,6 @@
  */
 import { z as zod } from 'zod';
 
-export const postApiUsersLoginBodyEmailRegExp = new RegExp('\\S');
-export const postApiUsersLoginBodyPasswordMin = 10;
-
-export const postApiUsersLoginBodyPasswordRegExp = new RegExp(
-  '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$',
-);
-
-export const postApiUsersLoginBody = zod.object({
-  email: zod.string().regex(postApiUsersLoginBodyEmailRegExp),
-  password: zod
-    .string()
-    .min(postApiUsersLoginBodyPasswordMin)
-    .regex(postApiUsersLoginBodyPasswordRegExp),
-});
-
-export const postApiUsersRegisterBodyNameRegExp = new RegExp('\\S');
-export const postApiUsersRegisterBodyEmailRegExp = new RegExp('\\S');
-export const postApiUsersRegisterBodyPasswordMin = 10;
-
-export const postApiUsersRegisterBodyPasswordRegExp = new RegExp(
-  '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$',
-);
-
-export const postApiUsersRegisterBody = zod.object({
-  name: zod.string().regex(postApiUsersRegisterBodyNameRegExp),
-  email: zod.string().regex(postApiUsersRegisterBodyEmailRegExp),
-  roles: zod.array(zod.enum(['USER', 'ADMIN'])).optional(),
-  password: zod
-    .string()
-    .min(postApiUsersRegisterBodyPasswordMin)
-    .regex(postApiUsersRegisterBodyPasswordRegExp),
-});
-
 export const getApiUsersIdParams = zod.object({
   id: zod.string(),
 });

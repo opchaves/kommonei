@@ -3,7 +3,7 @@ package com.opchaves.kommonei.users;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import com.opchaves.kommonei.jwt.Role;
+import com.opchaves.kommonei.auth.Role;
 
 import io.quarkus.mongodb.panache.common.MongoEntity;
 import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntity;

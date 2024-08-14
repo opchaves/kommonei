@@ -17,7 +17,7 @@ export const loggingManagerGetAllQueryParams = zod.object({
 
 export const loggingManagerGetAllResponseItem = zod.object({
   name: zod.string().optional(),
-  effectiveLevel: zod
+  configuredLevel: zod
     .enum([
       'OFF',
       'SEVERE',
@@ -35,7 +35,7 @@ export const loggingManagerGetAllResponseItem = zod.object({
       'ALL',
     ])
     .optional(),
-  configuredLevel: zod
+  effectiveLevel: zod
     .enum([
       'OFF',
       'SEVERE',

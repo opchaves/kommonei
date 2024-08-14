@@ -1,4 +1,4 @@
-package com.opchaves.kommonei.jwt;
+package com.opchaves.kommonei.auth;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
