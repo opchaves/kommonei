@@ -152,7 +152,11 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/json" : { }
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserResponse"
+                }
+              }
             }
           },
           "401" : {
@@ -435,6 +439,11 @@
           }
         }
       },
+      "LocalDateTime" : {
+        "format" : "date-time",
+        "type" : "string",
+        "example" : "2022-03-10T12:15:50"
+      },
       "LoginResponse" : {
         "description" : "Login Response Object",
         "required" : [ "token" ],
@@ -545,6 +554,9 @@
           "createdAt" : {
             "description" : "User creation date",
             "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/LocalDateTime"
+            } ],
             "example" : "2024-08-14T11:43:42.63617"
           }
         }

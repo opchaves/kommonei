@@ -17,7 +17,7 @@ public class UserResponse {
   public String email;
 
   @Schema(required = true, example = "2024-08-14T11:43:42.63617", description = "User creation date")
-  public String createdAt;
+  public LocalDateTime createdAt;
 
   public UserResponse() {
   }
@@ -32,6 +32,6 @@ public class UserResponse {
     this.id = user.id.toString();
     this.name = user.name;
     this.email = user.email;
-    this.createdAt = user.createdAt.toString();
+    this.createdAt = user.createdAt;
   }
 }

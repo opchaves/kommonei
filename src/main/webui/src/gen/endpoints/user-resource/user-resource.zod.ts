@@ -7,6 +7,13 @@
  */
 import { z as zod } from 'zod';
 
+export const getApiUsersMeResponse = zod.object({
+  id: zod.string(),
+  name: zod.string(),
+  email: zod.string(),
+  createdAt: zod.string(),
+});
+
 export const getApiUsersIdParams = zod.object({
   id: zod.string(),
 });

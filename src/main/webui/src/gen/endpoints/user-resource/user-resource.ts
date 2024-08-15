@@ -21,7 +21,7 @@ import { useAxiosMutator } from '../../../AxiosMutator';
 import type { ErrorType } from '../../../AxiosMutator';
 
 export const useGetApiUsersMeHook = () => {
-  const getApiUsersMe = useAxiosMutator<unknown>();
+  const getApiUsersMe = useAxiosMutator<UserResponse>();
 
   return useCallback(
     (signal?: AbortSignal) => {

@@ -9,6 +9,16 @@ import { faker } from '@faker-js/faker';
 import { HttpResponse, delay, http } from 'msw';
 import type { UserResponse } from '../../models';
 
+export const getGetApiUsersMeResponseMock = (
+  overrideResponse: Partial<UserResponse> = {},
+): UserResponse => ({
+  createdAt: faker.word.sample(),
+  email: faker.word.sample(),
+  id: faker.word.sample(),
+  name: faker.word.sample(),
+  ...overrideResponse,
+});
+
 export const getGetApiUsersIdResponseMock = (
   overrideResponse: Partial<UserResponse> = {},
 ): UserResponse => ({
@@ -21,15 +31,24 @@ export const getGetApiUsersIdResponseMock = (
 
 export const getGetApiUsersMeMockHandler = (
   overrideResponse?:
-    | unknown
-    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<unknown> | unknown),
+    | UserResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<UserResponse> | UserResponse),
 ) => {
   return http.get('*/api/users/me', async (info) => {
     await delay(1000);
-    if (typeof overrideResponse === 'function') {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetApiUsersMeResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    );
   });
 };
 
