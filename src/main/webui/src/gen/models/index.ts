@@ -6,12 +6,15 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export * from './activityRequest';
+export * from './activityResponse';
 export * from './authRequest';
 export * from './authResponse';
 export * from './errorResponse';
 export * from './healthCheckResponse';
 export * from './healthCheckResponseData';
 export * from './healthCheckStatus';
+export * from './localDateTime';
 export * from './loginResponse';
 export * from './post';
 export * from './postRequest';
