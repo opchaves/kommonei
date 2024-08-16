@@ -123,32 +123,6 @@ paths:
           description: OK
           content:
             application/json: {}
-  /api/posts:
-    get:
-      tags:
-      - Post Resource
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Post"
-    post:
-      tags:
-      - Post Resource
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PostRequest"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json: {}
   /api/users/me:
     get:
       tags:
@@ -325,34 +299,6 @@ components:
           description: JWT Token
           type: string
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-    Post:
-      description: Entity that represents a post.
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        content:
-          type: string
-        author:
-          type: string
-        creationDate:
-          type: string
-    PostRequest:
-      required:
-      - title
-      - content
-      type: object
-      properties:
-        title:
-          minLength: 1
-          type: string
-        content:
-          minLength: 1
-          type: string
-        author:
-          type: string
     Role:
       enum:
       - USER
