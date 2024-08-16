@@ -13,8 +13,6 @@ export * from './authResponse';
 export * from './errorResponse';
 export * from './localDateTime';
 export * from './loginResponse';
-export * from './post';
-export * from './postRequest';
 export * from './role';
 export * from './userRequest';
 export * from './userResponse';
