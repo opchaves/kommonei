@@ -87,7 +87,7 @@ public class ActivityResource {
     return Activity.find(query)
         .<Activity>firstResult()
         .onItem().ifNull().failWith(new WebApplicationException("Activity not found", 404))
-        .onItem().transformToUni(activity -> activity.delete())
+        .onItem().ifNotNull().transformToUni(activity -> activity.delete())
         .onItem().transform(a -> {
           return Response.noContent().build();
         });
