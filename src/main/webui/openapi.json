@@ -320,6 +320,7 @@
             "type" : "string"
           },
           "category" : {
+            "pattern" : "\\S",
             "type" : "string"
           },
           "userId" : {

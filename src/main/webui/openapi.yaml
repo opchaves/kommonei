@@ -224,6 +224,7 @@ components:
           - expense
           type: string
         category:
+          pattern: \S
           type: string
         userId:
           description: User Object Id
