@@ -5,17 +5,26 @@
  * Quarkus monorepo demonstrating Panache Mongo REST server with AntD UI client
  * OpenAPI spec version: 1.0.0
  */
+import type { ActivityDTOType } from './activityDTOType';
 
 /**
- * Activity request
+ * Activity input data
  */
-export interface ActivityRequest {
-  /** @pattern \S */
+export interface ActivityDTO {
   category: string;
+  createdAt?: string;
   description?: string;
   handledAt?: string;
+  /** Activity Object Id */
+  id?: string;
   /** @pattern \S */
   name: string;
   paid?: boolean;
+  /** @minimum 0 */
   price?: number;
+  /** @pattern \S */
+  type: ActivityDTOType;
+  updatedAt?: string;
+  /** User Object Id */
+  userId?: string;
 }

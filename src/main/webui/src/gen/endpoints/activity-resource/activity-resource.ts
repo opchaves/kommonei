@@ -19,7 +19,7 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import type { ActivityRequest } from '../../models';
+import type { ActivityDTO } from '../../models';
 import { useAxiosMutator } from '../../../AxiosMutator';
 import type { ErrorType } from '../../../AxiosMutator';
 
@@ -130,12 +130,12 @@ export const usePostApiActivitiesHook = () => {
   const postApiActivities = useAxiosMutator<unknown>();
 
   return useCallback(
-    (activityRequest: ActivityRequest) => {
+    (activityDTO: ActivityDTO) => {
       return postApiActivities({
         url: `/api/activities`,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        data: activityRequest,
+        data: activityDTO,
       });
     },
     [postApiActivities],
@@ -149,13 +149,13 @@ export const usePostApiActivitiesMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof usePostApiActivitiesHook>>>,
     TError,
-    { data: ActivityRequest },
+    { data: ActivityDTO },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<ReturnType<typeof usePostApiActivitiesHook>>>,
   TError,
-  { data: ActivityRequest },
+  { data: ActivityDTO },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
@@ -164,7 +164,7 @@ export const usePostApiActivitiesMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<ReturnType<typeof usePostApiActivitiesHook>>>,
-    { data: ActivityRequest }
+    { data: ActivityDTO }
   > = (props) => {
     const { data } = props ?? {};
 
@@ -177,36 +177,297 @@ export const usePostApiActivitiesMutationOptions = <
 export type PostApiActivitiesMutationResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof usePostApiActivitiesHook>>>
 >;
-export type PostApiActivitiesMutationBody = ActivityRequest;
+export type PostApiActivitiesMutationBody = ActivityDTO;
 export type PostApiActivitiesMutationError = ErrorType<void>;
 
 export const usePostApiActivities = <TError = ErrorType<void>, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof usePostApiActivitiesHook>>>,
     TError,
-    { data: ActivityRequest },
+    { data: ActivityDTO },
     TContext
   >;
 }): UseMutationResult<
   Awaited<ReturnType<ReturnType<typeof usePostApiActivitiesHook>>>,
   TError,
-  { data: ActivityRequest },
+  { data: ActivityDTO },
   TContext
 > => {
   const mutationOptions = usePostApiActivitiesMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
+export const useGetApiActivitiesAllHook = () => {
+  const getApiActivitiesAll = useAxiosMutator<unknown>();
+
+  return useCallback(
+    (signal?: AbortSignal) => {
+      return getApiActivitiesAll({ url: `/api/activities/all`, method: 'GET', signal });
+    },
+    [getApiActivitiesAll],
+  );
+};
+
+export const getGetApiActivitiesAllQueryKey = () => {
+  return [`/api/activities/all`] as const;
+};
+
+export const useGetApiActivitiesAllQueryOptions = <
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+  TError = ErrorType<void>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+      TError,
+      TData
+    >
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiActivitiesAllQueryKey();
+
+  const getApiActivitiesAll = useGetApiActivitiesAllHook();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>
+  > = ({ signal }) => getApiActivitiesAll(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiActivitiesAllQueryResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>
+>;
+export type GetApiActivitiesAllQueryError = ErrorType<void>;
+
+export function useGetApiActivitiesAll<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+  TError = ErrorType<void>,
+>(options: {
+  query: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetApiActivitiesAll<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+  TError = ErrorType<void>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetApiActivitiesAll<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+  TError = ErrorType<void>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+      TError,
+      TData
+    >
+  >;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useGetApiActivitiesAll<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+  TError = ErrorType<void>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesAllHook>>>,
+      TError,
+      TData
+    >
+  >;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = useGetApiActivitiesAllQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const useGetApiActivitiesIdHook = () => {
+  const getApiActivitiesId = useAxiosMutator<unknown>();
+
+  return useCallback(
+    (id: string, signal?: AbortSignal) => {
+      return getApiActivitiesId({ url: `/api/activities/${id}`, method: 'GET', signal });
+    },
+    [getApiActivitiesId],
+  );
+};
+
+export const getGetApiActivitiesIdQueryKey = (id: string) => {
+  return [`/api/activities/${id}`] as const;
+};
+
+export const useGetApiActivitiesIdQueryOptions = <
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+  TError = ErrorType<void>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiActivitiesIdQueryKey(id);
+
+  const getApiActivitiesId = useGetApiActivitiesIdHook();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>
+  > = ({ signal }) => getApiActivitiesId(id, signal);
+
+  return { queryKey, queryFn, enabled: !!id, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiActivitiesIdQueryResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>
+>;
+export type GetApiActivitiesIdQueryError = ErrorType<void>;
+
+export function useGetApiActivitiesId<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+  TError = ErrorType<void>,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetApiActivitiesId<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+  TError = ErrorType<void>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetApiActivitiesId<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+  TError = ErrorType<void>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+        TError,
+        TData
+      >
+    >;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useGetApiActivitiesId<
+  TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+  TError = ErrorType<void>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesIdHook>>>,
+        TError,
+        TData
+      >
+    >;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = useGetApiActivitiesIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const usePutApiActivitiesIdHook = () => {
   const putApiActivitiesId = useAxiosMutator<unknown>();
 
   return useCallback(
-    (id: string, activityRequest: ActivityRequest) => {
+    (id: string, activityDTO: ActivityDTO) => {
       return putApiActivitiesId({
         url: `/api/activities/${id}`,
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        data: activityRequest,
+        data: activityDTO,
       });
     },
     [putApiActivitiesId],
@@ -220,13 +481,13 @@ export const usePutApiActivitiesIdMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof usePutApiActivitiesIdHook>>>,
     TError,
-    { id: string; data: ActivityRequest },
+    { id: string; data: ActivityDTO },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<ReturnType<typeof usePutApiActivitiesIdHook>>>,
   TError,
-  { id: string; data: ActivityRequest },
+  { id: string; data: ActivityDTO },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
@@ -235,7 +496,7 @@ export const usePutApiActivitiesIdMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<ReturnType<typeof usePutApiActivitiesIdHook>>>,
-    { id: string; data: ActivityRequest }
+    { id: string; data: ActivityDTO }
   > = (props) => {
     const { id, data } = props ?? {};
 
@@ -248,89 +509,23 @@ export const usePutApiActivitiesIdMutationOptions = <
 export type PutApiActivitiesIdMutationResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof usePutApiActivitiesIdHook>>>
 >;
-export type PutApiActivitiesIdMutationBody = ActivityRequest;
+export type PutApiActivitiesIdMutationBody = ActivityDTO;
 export type PutApiActivitiesIdMutationError = ErrorType<void>;
 
 export const usePutApiActivitiesId = <TError = ErrorType<void>, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof usePutApiActivitiesIdHook>>>,
     TError,
-    { id: string; data: ActivityRequest },
+    { id: string; data: ActivityDTO },
     TContext
   >;
 }): UseMutationResult<
   Awaited<ReturnType<ReturnType<typeof usePutApiActivitiesIdHook>>>,
   TError,
-  { id: string; data: ActivityRequest },
+  { id: string; data: ActivityDTO },
   TContext
 > => {
   const mutationOptions = usePutApiActivitiesIdMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-export const useDeleteApiActivitiesIdHook = () => {
-  const deleteApiActivitiesId = useAxiosMutator<unknown>();
-
-  return useCallback(
-    (id: string) => {
-      return deleteApiActivitiesId({ url: `/api/activities/${id}`, method: 'DELETE' });
-    },
-    [deleteApiActivitiesId],
-  );
-};
-
-export const useDeleteApiActivitiesIdMutationOptions = <
-  TError = ErrorType<void>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useDeleteApiActivitiesIdHook>>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<ReturnType<typeof useDeleteApiActivitiesIdHook>>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {};
-
-  const deleteApiActivitiesId = useDeleteApiActivitiesIdHook();
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<ReturnType<typeof useDeleteApiActivitiesIdHook>>>,
-    { id: string }
-  > = (props) => {
-    const { id } = props ?? {};
-
-    return deleteApiActivitiesId(id);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type DeleteApiActivitiesIdMutationResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof useDeleteApiActivitiesIdHook>>>
->;
-
-export type DeleteApiActivitiesIdMutationError = ErrorType<void>;
-
-export const useDeleteApiActivitiesId = <TError = ErrorType<void>, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useDeleteApiActivitiesIdHook>>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<ReturnType<typeof useDeleteApiActivitiesIdHook>>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationOptions = useDeleteApiActivitiesIdMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

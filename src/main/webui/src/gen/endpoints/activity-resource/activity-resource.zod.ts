@@ -8,15 +8,25 @@
 import { z as zod } from 'zod';
 
 export const postApiActivitiesBodyNameRegExp = new RegExp('\\S');
-export const postApiActivitiesBodyCategoryRegExp = new RegExp('\\S');
+export const postApiActivitiesBodyPriceMin = 0;
+export const postApiActivitiesBodyTypeRegExp = new RegExp('\\S');
 
 export const postApiActivitiesBody = zod.object({
+  id: zod.string().optional(),
   name: zod.string().regex(postApiActivitiesBodyNameRegExp),
   description: zod.string().optional(),
-  price: zod.number().optional(),
+  price: zod.number().min(postApiActivitiesBodyPriceMin).optional(),
   paid: zod.boolean().optional(),
-  category: zod.string().regex(postApiActivitiesBodyCategoryRegExp),
+  type: zod.regex(postApiActivitiesBodyTypeRegExp).enum(['income', 'expense']),
+  category: zod.string(),
+  userId: zod.string().optional(),
   handledAt: zod.string().optional(),
+  createdAt: zod.string().optional(),
+  updatedAt: zod.string().optional(),
+});
+
+export const getApiActivitiesIdParams = zod.object({
+  id: zod.string(),
 });
 
 export const putApiActivitiesIdParams = zod.object({
@@ -24,17 +34,19 @@ export const putApiActivitiesIdParams = zod.object({
 });
 
 export const putApiActivitiesIdBodyNameRegExp = new RegExp('\\S');
-export const putApiActivitiesIdBodyCategoryRegExp = new RegExp('\\S');
+export const putApiActivitiesIdBodyPriceMin = 0;
+export const putApiActivitiesIdBodyTypeRegExp = new RegExp('\\S');
 
 export const putApiActivitiesIdBody = zod.object({
+  id: zod.string().optional(),
   name: zod.string().regex(putApiActivitiesIdBodyNameRegExp),
   description: zod.string().optional(),
-  price: zod.number().optional(),
+  price: zod.number().min(putApiActivitiesIdBodyPriceMin).optional(),
   paid: zod.boolean().optional(),
-  category: zod.string().regex(putApiActivitiesIdBodyCategoryRegExp),
+  type: zod.regex(putApiActivitiesIdBodyTypeRegExp).enum(['income', 'expense']),
+  category: zod.string(),
+  userId: zod.string().optional(),
   handledAt: zod.string().optional(),
-});
-
-export const deleteApiActivitiesIdParams = zod.object({
-  id: zod.string(),
+  createdAt: zod.string().optional(),
+  updatedAt: zod.string().optional(),
 });

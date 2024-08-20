@@ -6,11 +6,12 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export * from './activityRequest';
-export * from './activityResponse';
+export * from './activityDTO';
+export * from './activityDTOType';
 export * from './authRequest';
 export * from './authResponse';
 export * from './errorResponse';
+export * from './instant';
 export * from './localDateTime';
 export * from './loginResponse';
 export * from './role';

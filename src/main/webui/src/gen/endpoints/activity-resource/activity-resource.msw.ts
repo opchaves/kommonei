@@ -35,6 +35,34 @@ export const getPostApiActivitiesMockHandler = (
   });
 };
 
+export const getGetApiActivitiesAllMockHandler = (
+  overrideResponse?:
+    | unknown
+    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<unknown> | unknown),
+) => {
+  return http.get('*/api/activities/all', async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === 'function') {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getGetApiActivitiesIdMockHandler = (
+  overrideResponse?:
+    | unknown
+    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<unknown> | unknown),
+) => {
+  return http.get('*/api/activities/:id', async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === 'function') {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
 export const getPutApiActivitiesIdMockHandler = (
   overrideResponse?:
     | unknown
@@ -48,23 +76,10 @@ export const getPutApiActivitiesIdMockHandler = (
     return new HttpResponse(null, { status: 200 });
   });
 };
-
-export const getDeleteApiActivitiesIdMockHandler = (
-  overrideResponse?:
-    | unknown
-    | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<unknown> | unknown),
-) => {
-  return http.delete('*/api/activities/:id', async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === 'function') {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
-  });
-};
 export const getActivityResourceMock = () => [
   getGetApiActivitiesMockHandler(),
   getPostApiActivitiesMockHandler(),
+  getGetApiActivitiesAllMockHandler(),
+  getGetApiActivitiesIdMockHandler(),
   getPutApiActivitiesIdMockHandler(),
-  getDeleteApiActivitiesIdMockHandler(),
 ];

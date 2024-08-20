@@ -45,7 +45,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ActivityRequest"
+                "$ref" : "#/components/schemas/ActivityDTO"
               }
             }
           }
@@ -69,8 +69,30 @@
         } ]
       }
     },
+    "/api/activities/all" : {
+      "get" : {
+        "tags" : [ "Activity Resource" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : { }
+            }
+          },
+          "401" : {
+            "description" : "Not Authorized"
+          },
+          "403" : {
+            "description" : "Not Allowed"
+          }
+        },
+        "security" : [ {
+          "SecurityScheme" : [ ]
+        } ]
+      }
+    },
     "/api/activities/{id}" : {
-      "put" : {
+      "get" : {
         "tags" : [ "Activity Resource" ],
         "parameters" : [ {
           "name" : "id",
@@ -80,15 +102,6 @@
             "type" : "string"
           }
         } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ActivityRequest"
-              }
-            }
-          }
-        },
         "responses" : {
           "200" : {
             "description" : "OK",
@@ -107,7 +120,7 @@
           "SecurityScheme" : [ ]
         } ]
       },
-      "delete" : {
+      "put" : {
         "tags" : [ "Activity Resource" ],
         "parameters" : [ {
           "name" : "id",
@@ -117,6 +130,15 @@
             "type" : "string"
           }
         } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ActivityDTO"
+              }
+            }
+          }
+        },
         "responses" : {
           "200" : {
             "description" : "OK",
@@ -243,11 +265,16 @@
   },
   "components" : {
     "schemas" : {
-      "ActivityRequest" : {
-        "description" : "Activity request",
-        "required" : [ "name", "category" ],
+      "ActivityDTO" : {
+        "description" : "Activity input data",
+        "required" : [ "name", "type", "category" ],
         "type" : "object",
         "properties" : {
+          "id" : {
+            "description" : "Activity Object Id",
+            "type" : "string",
+            "example" : "507f1f77bcf86cd799439011"
+          },
           "name" : {
             "pattern" : "\\S",
             "type" : "string"
@@ -258,75 +285,39 @@
           "price" : {
             "format" : "double",
             "default" : 0.0,
+            "minimum" : 0,
             "type" : "number"
           },
           "paid" : {
             "default" : false,
             "type" : "boolean"
           },
-          "category" : {
+          "type" : {
             "pattern" : "\\S",
+            "enum" : [ "income", "expense" ],
             "type" : "string"
-          },
-          "handledAt" : {
-            "type" : "string",
-            "allOf" : [ {
-              "$ref" : "#/components/schemas/LocalDateTime"
-            } ]
-          }
-        }
-      },
-      "ActivityResponse" : {
-        "description" : "Activity Response Object",
-        "required" : [ "id", "name", "description", "price", "paid", "category", "userId", "handledAt", "createdAt", "updatedAt" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "description" : "Activity Object Id",
-            "type" : "string",
-            "example" : "507f1f77bcf86cd799439011"
-          },
-          "name" : {
-            "description" : "Activity name",
-            "type" : "string"
-          },
-          "description" : {
-            "description" : "Activity description",
-            "type" : "string"
-          },
-          "price" : {
-            "format" : "double",
-            "description" : "Activity price",
-            "type" : "number"
-          },
-          "paid" : {
-            "description" : "Activity payment status",
-            "type" : "boolean"
           },
           "category" : {
-            "description" : "Activity category",
             "type" : "string"
           },
           "userId" : {
             "description" : "User Object Id",
-            "type" : "string"
+            "type" : "string",
+            "example" : "507f1f77bcf86cd799439011"
           },
           "handledAt" : {
-            "description" : "Activity handling date",
             "type" : "string",
             "allOf" : [ {
               "$ref" : "#/components/schemas/LocalDateTime"
             } ]
           },
           "createdAt" : {
-            "description" : "Activity creation date",
             "type" : "string",
             "allOf" : [ {
               "$ref" : "#/components/schemas/LocalDateTime"
             } ]
           },
           "updatedAt" : {
-            "description" : "Activity update date",
             "type" : "string",
             "allOf" : [ {
               "$ref" : "#/components/schemas/LocalDateTime"
