@@ -23,7 +23,11 @@ paths:
         "200":
           description: OK
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityDTO"
         "401":
           description: Not Authorized
         "403":
@@ -57,7 +61,11 @@ paths:
         "200":
           description: OK
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityDTO"
         "401":
           description: Not Authorized
         "403":
@@ -78,7 +86,9 @@ paths:
         "200":
           description: OK
           content:
-            application/json: {}
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActivityDTO"
         "401":
           description: Not Authorized
         "403":
@@ -103,7 +113,9 @@ paths:
         "200":
           description: OK
           content:
-            application/json: {}
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActivityDTO"
         "401":
           description: Not Authorized
         "403":

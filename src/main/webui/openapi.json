@@ -25,7 +25,14 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/json" : { }
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/ActivityDTO"
+                  }
+                }
+              }
             }
           },
           "401" : {
@@ -76,7 +83,14 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/json" : { }
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/ActivityDTO"
+                  }
+                }
+              }
             }
           },
           "401" : {
@@ -106,7 +120,11 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/json" : { }
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActivityDTO"
+                }
+              }
             }
           },
           "401" : {
@@ -143,7 +161,11 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/json" : { }
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActivityDTO"
+                }
+              }
             }
           },
           "401" : {

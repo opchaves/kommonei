@@ -11,7 +11,6 @@ export * from './activityDTOType';
 export * from './authRequest';
 export * from './authResponse';
 export * from './errorResponse';
-export * from './instant';
 export * from './localDateTime';
 export * from './loginResponse';
 export * from './role';

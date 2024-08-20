@@ -1,6 +1,8 @@
 package com.opchaves.kommonei.activities;
 
 import java.net.URI;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.Claims;
@@ -32,31 +34,22 @@ public class ActivityResource {
 
   @GET
   @RolesAllowed("USER")
-  public Uni<Response> listUserActivities() {
-    return activityService.listUserActivities(new ObjectId(userId))
-        .onItem().transform(activities -> {
-          return Response.ok(activities).build();
-        });
+  public Uni<List<ActivityDTO>> listUserActivities() {
+    return activityService.listUserActivities(new ObjectId(userId));
   }
 
   @GET
   @Path("all")
   @RolesAllowed("ADMIN")
-  public Uni<Response> listActivities() {
-    return activityService.listActivities()
-        .onItem().transform(activities -> {
-          return Response.ok(activities).build();
-        });
+  public Uni<List<ActivityDTO>> listActivities() {
+    return activityService.listActivities();
   }
 
   @GET
   @Path("{id}")
   @RolesAllowed("USER")
-  public Uni<Response> getActivity(String id) {
-    return activityService.getActivity(new ObjectId(id), new ObjectId(userId))
-        .onItem().transform(activity -> {
-          return Response.ok(activity).build();
-        });
+  public Uni<ActivityDTO> getActivity(String id) {
+    return activityService.getActivity(new ObjectId(id), new ObjectId(userId));
   }
 
   @POST
@@ -72,11 +65,8 @@ public class ActivityResource {
   @PUT
   @Path("{id}")
   @RolesAllowed("USER")
-  public Uni<Response> updateActivity(String id, @Valid ActivityDTO input) {
-    return activityService.updateActivity(new ObjectId(id), input, new ObjectId(userId))
-        .onItem().transform(activity -> {
-          return Response.ok(activity).build();
-        });
+  public Uni<ActivityDTO> updateActivity(String id, @Valid ActivityDTO input) {
+    return activityService.updateActivity(new ObjectId(id), input, new ObjectId(userId));
   }
 
   public Uni<Response> deleteActivity(String id) {
