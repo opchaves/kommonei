@@ -16,6 +16,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
 @Path("/api/activities")
@@ -49,7 +50,8 @@ public class ActivityResource {
   @Path("{id}")
   @RolesAllowed("USER")
   public Uni<ActivityDTO> getActivity(String id) {
-    return activityService.getActivity(new ObjectId(id), new ObjectId(userId));
+    return activityService.getActivity(new ObjectId(id), new ObjectId(userId))
+      .onItem().ifNull().failWith(new WebApplicationException("Activity not found", 404));
   }
 
   @POST
