@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 
 @Schema(name = "ActivityDTO", description = "Activity input data")
@@ -20,8 +20,8 @@ public class ActivityDTO {
   @Schema
   public String description;
 
-  @Schema(defaultValue = "0.0", minimum = "0.0")
-  @Min(value = 0, message = "{Activity.price.min}")
+  @Schema(defaultValue = "0.0", minimum = "0.01")
+  @DecimalMin(value = "0.01", message = "{Activity.price.min}")
   public Double price;
 
   @Schema(defaultValue = "false")
