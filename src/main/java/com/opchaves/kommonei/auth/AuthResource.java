@@ -1,16 +1,17 @@
 package com.opchaves.kommonei.auth;
 
+import static jakarta.ws.rs.core.Response.Status.UNAUTHORIZED;
+
 import java.net.URI;
 import java.time.LocalDateTime;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.logging.Logger;
 
 import com.opchaves.kommonei.users.User;
-import com.opchaves.kommonei.users.ErrorResponse;
 import com.opchaves.kommonei.users.UserRequest;
 import com.opchaves.kommonei.users.UserResponse;
 
+import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -25,11 +26,11 @@ public class AuthResource {
   @Inject
   PBKDF2Encoder encoder;
 
-  @Inject
-  Logger log;
-
   @ConfigProperty(name = "com.opchaves.kommonei.jwt.duration")
   private Long duration;
+
+  @ConfigProperty(name = "com.opchaves.kommonei.jwt.issuer")
+  private String issuer;
 
   @POST
   @Path("/register")
@@ -45,49 +46,30 @@ public class AuthResource {
     }).onItem().transformToUni(u -> {
       u.password = encoder.encode(u.password);
       u.createdAt = LocalDateTime.now();
-
       return u.<User>persist();
     }).onItem().transform(u -> {
       URI uri = URI.create("/api/users/" + u.id.toString());
-      log.info("User created: " + uri);
+      Log.info("User created: " + uri);
       return Response.created(uri).entity(new UserResponse(u)).build();
-    }).onFailure().recoverWithItem(e -> {
-      log.error("Error creating user", e);
-      var errRes = new ErrorResponse("Error creating user: " + e.getMessage(), 400);
-      return Response.status(400).entity(errRes).build();
     });
   }
 
   @POST
   @Path("/login")
-  public Uni<Response> login(@Valid AuthRequest input) {
+  public Uni<AuthResponse> login(@Valid AuthRequest input) {
     return User.<User>find("email", input.getEmail()).firstResult()
         .onItem().ifNotNull().transform(u -> {
-          try {
-            if (encoder.verify(input.getPassword(), u.password)) {
-              var params = new TokenPayload();
-              params.id = u.id.toString();
-              params.email = u.email;
-              params.roles = u.roles;
-              params.issuer = "https://kommonei.com/issuer";
-              // TODO: get from config properties
-              params.duration = this.duration;
-              return Response.ok(new AuthResponse(TokenUtils.generateToken(params))).build();
-            } else {
-              log.warn("Invalid password for user " + u.email);
-              var errRes = new ErrorResponse("Invalid email or password", 401);
-              return Response.status(Response.Status.UNAUTHORIZED).entity(errRes).build();
-            }
-          } catch (Exception e) {
-            log.error("Error generating token", e);
-            var errRes = new ErrorResponse("Invalid email or password", 401);
-            return Response.status(Response.Status.UNAUTHORIZED).entity(errRes).build();
+          var matches = encoder.verify(input.getPassword(), u.password);
+          if (!matches) {
+            Log.warn("Invalid password for user " + u.email);
+            throw new WebApplicationException("Invalid email or password", UNAUTHORIZED);
           }
+          var payload = new TokenPayload(u, issuer, duration);
+          return new AuthResponse(TokenUtils.generateToken(payload));
         })
-        .onItem().ifNull().continueWith(() -> {
-          log.warn("User not found: " + input.getEmail());
-          var errRes = new ErrorResponse("Invalid email or password", 401);
-          return Response.status(Response.Status.UNAUTHORIZED).entity(errRes).build();
+        .onItem().ifNull().failWith(() -> {
+          Log.warn("User not found: " + input.getEmail());
+          throw new WebApplicationException("Invalid email or password", UNAUTHORIZED);
         });
   }
 }
