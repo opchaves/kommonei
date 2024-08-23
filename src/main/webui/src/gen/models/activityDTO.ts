@@ -11,6 +11,7 @@ import type { ActivityDTOType } from './activityDTOType';
  * Activity input data
  */
 export interface ActivityDTO {
+  /** @pattern \S */
   category: string;
   createdAt?: string;
   description?: string;
@@ -20,7 +21,7 @@ export interface ActivityDTO {
   /** @pattern \S */
   name: string;
   paid?: boolean;
-  /** @minimum 0 */
+  /** @minimum 0.01 */
   price?: number;
   /** @pattern \S */
   type: ActivityDTOType;

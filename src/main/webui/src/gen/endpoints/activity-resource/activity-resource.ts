@@ -24,7 +24,7 @@ import { useAxiosMutator } from '../../../AxiosMutator';
 import type { ErrorType } from '../../../AxiosMutator';
 
 export const useGetApiActivitiesHook = () => {
-  const getApiActivities = useAxiosMutator<unknown>();
+  const getApiActivities = useAxiosMutator<ActivityDTO[]>();
 
   return useCallback(
     (signal?: AbortSignal) => {
@@ -198,7 +198,7 @@ export const usePostApiActivities = <TError = ErrorType<void>, TContext = unknow
   return useMutation(mutationOptions);
 };
 export const useGetApiActivitiesAllHook = () => {
-  const getApiActivitiesAll = useAxiosMutator<unknown>();
+  const getApiActivitiesAll = useAxiosMutator<ActivityDTO[]>();
 
   return useCallback(
     (signal?: AbortSignal) => {
@@ -321,7 +321,7 @@ export function useGetApiActivitiesAll<
 }
 
 export const useGetApiActivitiesIdHook = () => {
-  const getApiActivitiesId = useAxiosMutator<unknown>();
+  const getApiActivitiesId = useAxiosMutator<ActivityDTO>();
 
   return useCallback(
     (id: string, signal?: AbortSignal) => {
@@ -459,7 +459,7 @@ export function useGetApiActivitiesId<
 }
 
 export const usePutApiActivitiesIdHook = () => {
-  const putApiActivitiesId = useAxiosMutator<unknown>();
+  const putApiActivitiesId = useAxiosMutator<ActivityDTO>();
 
   return useCallback(
     (id: string, activityDTO: ActivityDTO) => {

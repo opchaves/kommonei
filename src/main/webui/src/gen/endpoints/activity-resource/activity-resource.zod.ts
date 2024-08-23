@@ -7,9 +7,30 @@
  */
 import { z as zod } from 'zod';
 
+export const getApiActivitiesResponseNameRegExp = new RegExp('\\S');
+export const getApiActivitiesResponsePriceMin = 0.01;
+export const getApiActivitiesResponseTypeRegExp = new RegExp('\\S');
+export const getApiActivitiesResponseCategoryRegExp = new RegExp('\\S');
+
+export const getApiActivitiesResponseItem = zod.object({
+  id: zod.string().optional(),
+  name: zod.string().regex(getApiActivitiesResponseNameRegExp),
+  description: zod.string().optional(),
+  price: zod.number().min(getApiActivitiesResponsePriceMin).optional(),
+  paid: zod.boolean().optional(),
+  type: zod.regex(getApiActivitiesResponseTypeRegExp).enum(['income', 'expense']),
+  category: zod.string().regex(getApiActivitiesResponseCategoryRegExp),
+  userId: zod.string().optional(),
+  handledAt: zod.string().optional(),
+  createdAt: zod.string().optional(),
+  updatedAt: zod.string().optional(),
+});
+export const getApiActivitiesResponse = zod.array(getApiActivitiesResponseItem);
+
 export const postApiActivitiesBodyNameRegExp = new RegExp('\\S');
-export const postApiActivitiesBodyPriceMin = 0;
+export const postApiActivitiesBodyPriceMin = 0.01;
 export const postApiActivitiesBodyTypeRegExp = new RegExp('\\S');
+export const postApiActivitiesBodyCategoryRegExp = new RegExp('\\S');
 
 export const postApiActivitiesBody = zod.object({
   id: zod.string().optional(),
@@ -18,15 +39,54 @@ export const postApiActivitiesBody = zod.object({
   price: zod.number().min(postApiActivitiesBodyPriceMin).optional(),
   paid: zod.boolean().optional(),
   type: zod.regex(postApiActivitiesBodyTypeRegExp).enum(['income', 'expense']),
-  category: zod.string(),
+  category: zod.string().regex(postApiActivitiesBodyCategoryRegExp),
   userId: zod.string().optional(),
   handledAt: zod.string().optional(),
   createdAt: zod.string().optional(),
   updatedAt: zod.string().optional(),
 });
 
+export const getApiActivitiesAllResponseNameRegExp = new RegExp('\\S');
+export const getApiActivitiesAllResponsePriceMin = 0.01;
+export const getApiActivitiesAllResponseTypeRegExp = new RegExp('\\S');
+export const getApiActivitiesAllResponseCategoryRegExp = new RegExp('\\S');
+
+export const getApiActivitiesAllResponseItem = zod.object({
+  id: zod.string().optional(),
+  name: zod.string().regex(getApiActivitiesAllResponseNameRegExp),
+  description: zod.string().optional(),
+  price: zod.number().min(getApiActivitiesAllResponsePriceMin).optional(),
+  paid: zod.boolean().optional(),
+  type: zod.regex(getApiActivitiesAllResponseTypeRegExp).enum(['income', 'expense']),
+  category: zod.string().regex(getApiActivitiesAllResponseCategoryRegExp),
+  userId: zod.string().optional(),
+  handledAt: zod.string().optional(),
+  createdAt: zod.string().optional(),
+  updatedAt: zod.string().optional(),
+});
+export const getApiActivitiesAllResponse = zod.array(getApiActivitiesAllResponseItem);
+
 export const getApiActivitiesIdParams = zod.object({
   id: zod.string(),
+});
+
+export const getApiActivitiesIdResponseNameRegExp = new RegExp('\\S');
+export const getApiActivitiesIdResponsePriceMin = 0.01;
+export const getApiActivitiesIdResponseTypeRegExp = new RegExp('\\S');
+export const getApiActivitiesIdResponseCategoryRegExp = new RegExp('\\S');
+
+export const getApiActivitiesIdResponse = zod.object({
+  id: zod.string().optional(),
+  name: zod.string().regex(getApiActivitiesIdResponseNameRegExp),
+  description: zod.string().optional(),
+  price: zod.number().min(getApiActivitiesIdResponsePriceMin).optional(),
+  paid: zod.boolean().optional(),
+  type: zod.regex(getApiActivitiesIdResponseTypeRegExp).enum(['income', 'expense']),
+  category: zod.string().regex(getApiActivitiesIdResponseCategoryRegExp),
+  userId: zod.string().optional(),
+  handledAt: zod.string().optional(),
+  createdAt: zod.string().optional(),
+  updatedAt: zod.string().optional(),
 });
 
 export const putApiActivitiesIdParams = zod.object({
@@ -34,8 +94,9 @@ export const putApiActivitiesIdParams = zod.object({
 });
 
 export const putApiActivitiesIdBodyNameRegExp = new RegExp('\\S');
-export const putApiActivitiesIdBodyPriceMin = 0;
+export const putApiActivitiesIdBodyPriceMin = 0.01;
 export const putApiActivitiesIdBodyTypeRegExp = new RegExp('\\S');
+export const putApiActivitiesIdBodyCategoryRegExp = new RegExp('\\S');
 
 export const putApiActivitiesIdBody = zod.object({
   id: zod.string().optional(),
@@ -44,7 +105,26 @@ export const putApiActivitiesIdBody = zod.object({
   price: zod.number().min(putApiActivitiesIdBodyPriceMin).optional(),
   paid: zod.boolean().optional(),
   type: zod.regex(putApiActivitiesIdBodyTypeRegExp).enum(['income', 'expense']),
-  category: zod.string(),
+  category: zod.string().regex(putApiActivitiesIdBodyCategoryRegExp),
+  userId: zod.string().optional(),
+  handledAt: zod.string().optional(),
+  createdAt: zod.string().optional(),
+  updatedAt: zod.string().optional(),
+});
+
+export const putApiActivitiesIdResponseNameRegExp = new RegExp('\\S');
+export const putApiActivitiesIdResponsePriceMin = 0.01;
+export const putApiActivitiesIdResponseTypeRegExp = new RegExp('\\S');
+export const putApiActivitiesIdResponseCategoryRegExp = new RegExp('\\S');
+
+export const putApiActivitiesIdResponse = zod.object({
+  id: zod.string().optional(),
+  name: zod.string().regex(putApiActivitiesIdResponseNameRegExp),
+  description: zod.string().optional(),
+  price: zod.number().min(putApiActivitiesIdResponsePriceMin).optional(),
+  paid: zod.boolean().optional(),
+  type: zod.regex(putApiActivitiesIdResponseTypeRegExp).enum(['income', 'expense']),
+  category: zod.string().regex(putApiActivitiesIdResponseCategoryRegExp),
   userId: zod.string().optional(),
   handledAt: zod.string().optional(),
   createdAt: zod.string().optional(),
