@@ -22,6 +22,10 @@ export const postApiAuthLoginBody = zod.object({
     .regex(postApiAuthLoginBodyPasswordRegExp),
 });
 
+export const postApiAuthLoginResponse = zod.object({
+  token: zod.string(),
+});
+
 export const postApiAuthRegisterBodyNameRegExp = new RegExp('\\S');
 export const postApiAuthRegisterBodyEmailRegExp = new RegExp('\\S');
 export const postApiAuthRegisterBodyPasswordMin = 10;

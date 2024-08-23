@@ -5,19 +5,34 @@
  * Quarkus monorepo demonstrating Panache Mongo REST server with AntD UI client
  * OpenAPI spec version: 1.0.0
  */
+import { faker } from '@faker-js/faker';
 import { HttpResponse, delay, http } from 'msw';
+import type { AuthResponse } from '../../models';
+
+export const getPostApiAuthLoginResponseMock = (
+  overrideResponse: Partial<AuthResponse> = {},
+): AuthResponse => ({ token: faker.word.sample(), ...overrideResponse });
 
 export const getPostApiAuthLoginMockHandler = (
   overrideResponse?:
-    | unknown
-    | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<unknown> | unknown),
+    | AuthResponse
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<AuthResponse> | AuthResponse),
 ) => {
   return http.post('*/api/auth/login', async (info) => {
     await delay(1000);
-    if (typeof overrideResponse === 'function') {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getPostApiAuthLoginResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    );
   });
 };
 

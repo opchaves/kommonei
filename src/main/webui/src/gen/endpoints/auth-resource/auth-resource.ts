@@ -12,12 +12,12 @@ import type {
   UseMutationResult,
 } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import type { AuthRequest, UserRequest } from '../../models';
+import type { AuthRequest, AuthResponse, UserRequest } from '../../models';
 import { useAxiosMutator } from '../../../AxiosMutator';
 import type { ErrorType } from '../../../AxiosMutator';
 
 export const usePostApiAuthLoginHook = () => {
-  const postApiAuthLogin = useAxiosMutator<unknown>();
+  const postApiAuthLogin = useAxiosMutator<AuthResponse>();
 
   return useCallback(
     (authRequest: AuthRequest) => {
