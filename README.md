@@ -63,6 +63,16 @@ If you want to learn more about building native executables, please consult <htt
 
 ## Provided Code
 
+### Benchmark
+
+```sh
+export KOM_TOKEN="..."
+wrk -t20 -c100 -d30s \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${KOM_TOKEN}" \
+  http://localhost:8080/api/activities
+```
+
 ### REST
 
 Easily start your REST Web Services
