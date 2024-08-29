@@ -7,12 +7,15 @@
  */
 import { z as zod } from 'zod';
 
+/**
+ * @summary List all activities for the current user
+ */
 export const getApiActivitiesResponseNameRegExp = new RegExp('\\S');
 export const getApiActivitiesResponsePriceMin = 0.01;
 export const getApiActivitiesResponseTypeRegExp = new RegExp('\\S');
 export const getApiActivitiesResponseCategoryRegExp = new RegExp('\\S');
 
-export const getApiActivitiesResponseItem = zod.object({
+export const getApiActivitiesResponse = zod.object({
   id: zod.string().optional(),
   name: zod.string().regex(getApiActivitiesResponseNameRegExp),
   description: zod.string().optional(),
@@ -25,7 +28,6 @@ export const getApiActivitiesResponseItem = zod.object({
   createdAt: zod.string().optional(),
   updatedAt: zod.string().optional(),
 });
-export const getApiActivitiesResponse = zod.array(getApiActivitiesResponseItem);
 
 export const postApiActivitiesBodyNameRegExp = new RegExp('\\S');
 export const postApiActivitiesBodyPriceMin = 0.01;

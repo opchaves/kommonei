@@ -14,29 +14,56 @@ servers:
   description: Auto generated value
 - url: http://0.0.0.0:8080
   description: Auto generated value
+tags:
+- name: activities
 paths:
   /api/activities:
     get:
       tags:
-      - Activity Resource
+      - activities
+      summary: List all activities for the current user
       responses:
         "200":
-          description: OK
+          description: List of activities for the current user
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ActivityDTO"
+                $ref: "#/components/schemas/ActivityDTO"
+              examples:
+                activities:
+                  value: |-
+                    [  {
+                        "id": "5f9b3b7b7f4b3b1b3c7b3b7b",
+                        "name": "Activity 1",
+                        "description": "Description 1",
+                        "price": 0.0,
+                        "paid": true,
+                        type": "income",
+                        "category": "Category 1",
+                        "userId": "5f9b3b7b7f4b3b1b3c7b3b7b",
+                        "handledAt": "2024-05-30T00:00:00Z",
+                        "createdAt": "2024-05-30T00:00:00Z",
+                        "updatedAt": "2024-05-30T00:00:00Z"
+                      }
+                    ]
         "401":
-          description: Not Authorized
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                unauthorized:
+                  value:
+                    code: 401
+                    message: Unauthorized
         "403":
           description: Not Allowed
       security:
       - SecurityScheme: []
     post:
       tags:
-      - Activity Resource
+      - activities
       requestBody:
         content:
           application/json:
@@ -56,7 +83,7 @@ paths:
   /api/activities/all:
     get:
       tags:
-      - Activity Resource
+      - activities
       responses:
         "200":
           description: OK
@@ -75,7 +102,7 @@ paths:
   /api/activities/{id}:
     get:
       tags:
-      - Activity Resource
+      - activities
       parameters:
       - name: id
         in: path
@@ -97,7 +124,7 @@ paths:
       - SecurityScheme: []
     put:
       tags:
-      - Activity Resource
+      - activities
       parameters:
       - name: id
         in: path
@@ -270,7 +297,29 @@ components:
         token:
           type: string
           example: eyJhbGci...
+    ErrorMessage:
+      description: Error message
+      type: object
+      properties:
+        path:
+          description: Path to the field that caused the error
+          type: string
+        message:
+          description: Error message
+          type: string
     ErrorResponse:
+      description: Error response
+      type: object
+      properties:
+        errorId:
+          description: Unique error identifier
+          type: string
+        errors:
+          description: List of error messages
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorMessage"
+    ErrorResponse1:
       required:
       - message
       - status

@@ -2,6 +2,8 @@ package com.opchaves.kommonei.exception;
 
 import java.util.List;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -9,9 +11,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  *
  * @see https://developers.redhat.com/articles/2022/03/03/rest-api-error-modeling-quarkus-20
  */
+@Schema(name = "ErrorResponse", description = "Error response")
 public class ErrorResponse {
+
+  @Schema(description = "Unique error identifier")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String errorId;
+
+  @Schema(description = "List of error messages")
   private List<ErrorMessage> errors;
 
   public ErrorResponse(String errorId, ErrorMessage errorMessage) {

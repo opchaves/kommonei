@@ -19,12 +19,15 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import type { ActivityDTO } from '../../models';
+import type { ActivityDTO, ErrorResponse } from '../../models';
 import { useAxiosMutator } from '../../../AxiosMutator';
 import type { ErrorType } from '../../../AxiosMutator';
 
+/**
+ * @summary List all activities for the current user
+ */
 export const useGetApiActivitiesHook = () => {
-  const getApiActivities = useAxiosMutator<ActivityDTO[]>();
+  const getApiActivities = useAxiosMutator<ActivityDTO>();
 
   return useCallback(
     (signal?: AbortSignal) => {
@@ -40,7 +43,7 @@ export const getGetApiActivitiesQueryKey = () => {
 
 export const useGetApiActivitiesQueryOptions = <
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>,
-  TError = ErrorType<void>,
+  TError = ErrorType<ErrorResponse | void>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>, TError, TData>
@@ -66,11 +69,11 @@ export const useGetApiActivitiesQueryOptions = <
 export type GetApiActivitiesQueryResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>
 >;
-export type GetApiActivitiesQueryError = ErrorType<void>;
+export type GetApiActivitiesQueryError = ErrorType<ErrorResponse | void>;
 
 export function useGetApiActivities<
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>,
-  TError = ErrorType<void>,
+  TError = ErrorType<ErrorResponse | void>,
 >(options: {
   query: Partial<
     UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>, TError, TData>
@@ -86,7 +89,7 @@ export function useGetApiActivities<
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useGetApiActivities<
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>,
-  TError = ErrorType<void>,
+  TError = ErrorType<ErrorResponse | void>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>, TError, TData>
@@ -102,16 +105,19 @@ export function useGetApiActivities<
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useGetApiActivities<
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>,
-  TError = ErrorType<void>,
+  TError = ErrorType<ErrorResponse | void>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>, TError, TData>
   >;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+/**
+ * @summary List all activities for the current user
+ */
 
 export function useGetApiActivities<
   TData = Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>,
-  TError = ErrorType<void>,
+  TError = ErrorType<ErrorResponse | void>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetApiActivitiesHook>>>, TError, TData>

@@ -9,20 +9,22 @@ import { faker } from '@faker-js/faker';
 import { HttpResponse, delay, http } from 'msw';
 import type { ActivityDTO } from '../../models';
 
-export const getGetApiActivitiesResponseMock = (): ActivityDTO[] =>
-  Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-    category: faker.helpers.fromRegExp('S'),
-    createdAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    handledAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    id: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    name: faker.helpers.fromRegExp('S'),
-    paid: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
-    price: faker.helpers.arrayElement([faker.number.int({ min: 0.01, max: undefined }), undefined]),
-    type: faker.helpers.arrayElement(['income', 'expense'] as const),
-    updatedAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    userId: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-  }));
+export const getGetApiActivitiesResponseMock = (
+  overrideResponse: Partial<ActivityDTO> = {},
+): ActivityDTO => ({
+  category: faker.helpers.fromRegExp('S'),
+  createdAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  handledAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  id: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  name: faker.helpers.fromRegExp('S'),
+  paid: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+  price: faker.helpers.arrayElement([faker.number.int({ min: 0.01, max: undefined }), undefined]),
+  type: faker.helpers.arrayElement(['income', 'expense'] as const),
+  updatedAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  userId: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  ...overrideResponse,
+});
 
 export const getGetApiActivitiesAllResponseMock = (): ActivityDTO[] =>
   Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
@@ -75,10 +77,8 @@ export const getPutApiActivitiesIdResponseMock = (
 
 export const getGetApiActivitiesMockHandler = (
   overrideResponse?:
-    | ActivityDTO[]
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<ActivityDTO[]> | ActivityDTO[]),
+    | ActivityDTO
+    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ActivityDTO> | ActivityDTO),
 ) => {
   return http.get('*/api/activities', async (info) => {
     await delay(1000);
@@ -174,7 +174,7 @@ export const getPutApiActivitiesIdMockHandler = (
     );
   });
 };
-export const getActivityResourceMock = () => [
+export const getActivitiesMock = () => [
   getGetApiActivitiesMockHandler(),
   getPostApiActivitiesMockHandler(),
   getGetApiActivitiesAllMockHandler(),

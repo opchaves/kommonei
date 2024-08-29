@@ -1,10 +1,16 @@
 package com.opchaves.kommonei.exception;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+@Schema(name = "ErrorMessage", description = "Error message")
 public class ErrorMessage {
   @JsonInclude(JsonInclude.Include.NON_NULL)
+  @Schema(description = "Path to the field that caused the error")
   private String path;
+
+  @Schema(description = "Error message")
   private String message;
 
   public ErrorMessage(String path, String message) {
