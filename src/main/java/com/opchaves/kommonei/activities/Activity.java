@@ -13,7 +13,7 @@ public class Activity extends ReactivePanacheMongoEntity {
   public String description;
   public Double price;
   public Boolean paid;
-  public String type;
+  public ActivityType type;
   public String category;
   public ObjectId userId;
   public LocalDateTime handledAt;

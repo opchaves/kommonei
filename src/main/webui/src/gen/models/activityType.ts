@@ -6,13 +6,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * @pattern \S
- */
-export type ActivityDTOType = (typeof ActivityDTOType)[keyof typeof ActivityDTOType];
+export type ActivityType = (typeof ActivityType)[keyof typeof ActivityType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ActivityDTOType = {
+export const ActivityType = {
   income: 'income',
   expense: 'expense',
 } as const;

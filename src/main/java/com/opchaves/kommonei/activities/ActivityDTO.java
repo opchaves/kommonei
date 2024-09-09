@@ -7,6 +7,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Schema(name = "ActivityDTO", description = "Activity input data")
 public class ActivityDTO {
@@ -28,8 +29,8 @@ public class ActivityDTO {
   public Boolean paid;
 
   @Schema(required = true, enumeration = { "income", "expense" })
-  @NotBlank(message = "{Activity.type.required}")
-  public String type;
+  @NotNull(message = "{Activity.type.required}")
+  public ActivityType type;
 
   @Schema(required = true)
   @NotBlank(message = "{Activity.category.required}")

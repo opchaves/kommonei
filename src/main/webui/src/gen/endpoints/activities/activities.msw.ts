@@ -7,6 +7,7 @@
  */
 import { faker } from '@faker-js/faker';
 import { HttpResponse, delay, http } from 'msw';
+import { ActivityType } from '../../models';
 import type { ActivityDTO } from '../../models';
 
 export const getGetApiActivitiesResponseMock = (
@@ -20,7 +21,7 @@ export const getGetApiActivitiesResponseMock = (
   name: faker.helpers.fromRegExp('S'),
   paid: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
   price: faker.helpers.arrayElement([faker.number.int({ min: 0.01, max: undefined }), undefined]),
-  type: faker.helpers.arrayElement(['income', 'expense'] as const),
+  type: faker.helpers.arrayElement(Object.values(ActivityType)),
   updatedAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   userId: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   ...overrideResponse,
@@ -36,7 +37,7 @@ export const getGetApiActivitiesAllResponseMock = (): ActivityDTO[] =>
     name: faker.helpers.fromRegExp('S'),
     paid: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
     price: faker.helpers.arrayElement([faker.number.int({ min: 0.01, max: undefined }), undefined]),
-    type: faker.helpers.arrayElement(['income', 'expense'] as const),
+    type: faker.helpers.arrayElement(Object.values(ActivityType)),
     updatedAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
     userId: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   }));
@@ -52,7 +53,7 @@ export const getGetApiActivitiesIdResponseMock = (
   name: faker.helpers.fromRegExp('S'),
   paid: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
   price: faker.helpers.arrayElement([faker.number.int({ min: 0.01, max: undefined }), undefined]),
-  type: faker.helpers.arrayElement(['income', 'expense'] as const),
+  type: faker.helpers.arrayElement(Object.values(ActivityType)),
   updatedAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   userId: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   ...overrideResponse,
@@ -69,7 +70,7 @@ export const getPutApiActivitiesIdResponseMock = (
   name: faker.helpers.fromRegExp('S'),
   paid: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
   price: faker.helpers.arrayElement([faker.number.int({ min: 0.01, max: undefined }), undefined]),
-  type: faker.helpers.arrayElement(['income', 'expense'] as const),
+  type: faker.helpers.arrayElement(Object.values(ActivityType)),
   updatedAt: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   userId: faker.helpers.arrayElement([faker.word.sample(), undefined]),
   ...overrideResponse,

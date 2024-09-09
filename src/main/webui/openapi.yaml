@@ -247,11 +247,7 @@ components:
           default: false
           type: boolean
         type:
-          pattern: \S
-          enum:
-          - income
-          - expense
-          type: string
+          $ref: "#/components/schemas/ActivityType"
         category:
           pattern: \S
           type: string
@@ -271,6 +267,11 @@ components:
           type: string
           allOf:
           - $ref: "#/components/schemas/LocalDateTime"
+    ActivityType:
+      enum:
+      - income
+      - expense
+      type: string
     AuthRequest:
       required:
       - email

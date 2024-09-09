@@ -7,7 +7,7 @@
  */
 
 export * from './activityDTO';
-export * from './activityDTOType';
+export * from './activityType';
 export * from './authRequest';
 export * from './authResponse';
 export * from './errorMessage';
