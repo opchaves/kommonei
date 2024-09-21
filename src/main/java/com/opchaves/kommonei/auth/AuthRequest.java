@@ -5,6 +5,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Schema(name = "AuthRequest")
 public class AuthRequest {
@@ -19,6 +20,7 @@ public class AuthRequest {
   @Schema(required = true, example = "ab39cD-$d22", description = REGEX_MESSAGE, minLength = 10, pattern = REGEX)
   @NotBlank(message = "Password is required")
   @Pattern(regexp = REGEX, message = REGEX_MESSAGE)
+  @Size(max = 64)
   private String password;
 
   public AuthRequest() {

@@ -15,6 +15,7 @@ export interface AuthRequest {
   /**
    * Password must have at least 10 characters, one uppercase letter, one lowercase letter, one number and one special character
    * @minLength 10
+   * @maxLength 64
    * @pattern ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$
    */
   password: string;

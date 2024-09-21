@@ -10,6 +10,8 @@ import { z as zod } from 'zod';
 export const postApiAuthLoginBodyEmailRegExp = new RegExp('\\S');
 export const postApiAuthLoginBodyPasswordMin = 10;
 
+export const postApiAuthLoginBodyPasswordMax = 64;
+
 export const postApiAuthLoginBodyPasswordRegExp = new RegExp(
   '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$',
 );
@@ -19,6 +21,7 @@ export const postApiAuthLoginBody = zod.object({
   password: zod
     .string()
     .min(postApiAuthLoginBodyPasswordMin)
+    .max(postApiAuthLoginBodyPasswordMax)
     .regex(postApiAuthLoginBodyPasswordRegExp),
 });
 
@@ -29,6 +32,8 @@ export const postApiAuthLoginResponse = zod.object({
 export const postApiAuthRegisterBodyNameRegExp = new RegExp('\\S');
 export const postApiAuthRegisterBodyEmailRegExp = new RegExp('\\S');
 export const postApiAuthRegisterBodyPasswordMin = 10;
+
+export const postApiAuthRegisterBodyPasswordMax = 64;
 
 export const postApiAuthRegisterBodyPasswordRegExp = new RegExp(
   '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$',
@@ -41,5 +46,6 @@ export const postApiAuthRegisterBody = zod.object({
   password: zod
     .string()
     .min(postApiAuthRegisterBodyPasswordMin)
+    .max(postApiAuthRegisterBodyPasswordMax)
     .regex(postApiAuthRegisterBodyPasswordRegExp),
 });

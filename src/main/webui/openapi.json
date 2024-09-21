@@ -387,6 +387,7 @@
           },
           "password" : {
             "description" : "Password must have at least 10 characters, one uppercase letter, one lowercase letter, one number and one special character",
+            "maxLength" : 64,
             "minLength" : 10,
             "pattern" : "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$",
             "type" : "string",
@@ -481,6 +482,7 @@
           },
           "password" : {
             "description" : "Password must have at least 10 characters, one uppercase letter, one lowercase letter, one number and one special character",
+            "maxLength" : 64,
             "minLength" : 10,
             "pattern" : "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$",
             "type" : "string",

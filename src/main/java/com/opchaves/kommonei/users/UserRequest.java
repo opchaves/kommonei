@@ -11,6 +11,7 @@ import com.opchaves.kommonei.auth.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Schema(description = "User Request Object")
 public class UserRequest {
@@ -34,13 +35,14 @@ public class UserRequest {
    * - At least one lower case English letter, (?=.*?[a-z])
    * - At least one digit, (?=.*?[0-9])
    * - At least one special character, (?=.*?[#?!@$%^&*-])
-   * - Minimum eight in length .{8,} (with the anchors)
+   * - Minimum ten in length .{10,} (with the anchors)
    *
    * @see https://stackoverflow.com/a/19605207
    */
   @Schema(required = true, example = "ab39cD-$d22", description = REGEX_MESSAGE, minLength = 10, pattern = REGEX)
   @NotBlank(message = "Password is required")
   @Pattern(regexp = REGEX, message = REGEX_MESSAGE)
+  @Size(max = 64)
   public String password;
 
   public UserRequest() {
