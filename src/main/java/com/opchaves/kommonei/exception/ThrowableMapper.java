@@ -1,10 +1,15 @@
 package com.opchaves.kommonei.exception;
 
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
+import static jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.UUID;
 
 import io.quarkus.logging.Log;
-import io.smallrye.jwt.build.JwtException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
@@ -13,39 +18,45 @@ import jakarta.ws.rs.ext.Provider;
 @Provider
 public class ThrowableMapper implements ExceptionMapper<Throwable> {
 
+  private static final Set<ConstraintViolation<?>> getViolations(Throwable e) {
+    if (e instanceof ConstraintViolationException) {
+      return ((ConstraintViolationException) e).getConstraintViolations();
+    } else if (e.getCause() instanceof ConstraintViolationException) {
+      return ((ConstraintViolationException) e.getCause()).getConstraintViolations();
+    }
+    return null;
+  }
+
+  @Override
   public Response toResponse(Throwable e) {
-    String errorId = UUID.randomUUID().toString();
+    var violations = getViolations(e);
+
+    if (violations != null) {
+      var errors = violations.stream().map(violation -> {
+        var field = violation.getPropertyPath().toString();
+        var message = violation.getMessage();
+        return new ErrorItem(field, message);
+      }).toList();
+      ErrorResponse errorResponse = new ErrorResponse(errors);
+      return Response.status(BAD_REQUEST).entity(errorResponse).build();
+    }
 
     if (e instanceof WebApplicationException) {
-      Log.warn("errorId[{}]", errorId, e);
+      Log.infof("WebApplicationException: {}", e.getMessage());
       Response originalResponse = ((WebApplicationException) e).getResponse();
-      ErrorMessage errorMessage = new ErrorMessage(e.getMessage());
-      return Response.fromResponse(originalResponse).entity(errorMessage).build();
+      var error = new ErrorItem(e.getMessage());
+      return Response.status(originalResponse.getStatus()).entity(new ErrorResponse(error)).build();
     }
 
-    if (e instanceof IllegalArgumentException) {
-      Log.warn("errorId[{}]", errorId, e);
-      // TODO: set an generic message in prod for illegal argument errors
-      ErrorMessage errorMessage = new ErrorMessage(e.getMessage());
-      ErrorResponse errorResponse = new ErrorResponse(errorId, errorMessage);
-      return Response.status(Response.Status.BAD_REQUEST).entity(errorResponse).build();
-    }
+    var id = UUID.randomUUID().toString();
+    Log.errorf(e, "Error type %s with ID %s", e.getClass().getName(), id);
 
-    if (e instanceof JwtException) {
-      Log.warn("errorId[{}]", errorId, e);
-      // TODO: set an generic message in prod for jwt errors
-      ErrorMessage errorMessage = new ErrorMessage(e.getMessage());
-      ErrorResponse errorResponse = new ErrorResponse(errorId, errorMessage);
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorResponse).build();
-    }
+    String defaultErrorMessage = ResourceBundle.getBundle("ValidationMessages")
+        .getString("system.error");
+    var error = new ErrorItem(defaultErrorMessage);
+    var errorResponse = new ErrorResponse(id, error);
 
-    Log.error("errorId[{}]", errorId, e);
-
-    String defaultErrorMessage = ResourceBundle.getBundle("ValidationMessages").getString("System.error");
-    ErrorMessage errorMessage = new ErrorMessage(defaultErrorMessage);
-    ErrorResponse errorResponse = new ErrorResponse(errorId, errorMessage);
-
-    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorResponse).build();
+    return Response.status(INTERNAL_SERVER_ERROR).entity(errorResponse).build();
   }
 
 }

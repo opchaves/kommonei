@@ -5,14 +5,11 @@
  * Quarkus monorepo demonstrating Panache Mongo REST server with AntD UI client
  * OpenAPI spec version: 1.0.0
  */
-import type { ErrorMessage } from './errorMessage';
+import type { ErrorItem } from './errorItem';
 
-/**
- * Error response
- */
 export interface ErrorResponse {
   /** Unique error identifier */
   errorId?: string;
-  /** List of error messages */
-  errors?: ErrorMessage[];
+  /** A list of errors */
+  errors?: ErrorItem[];
 }

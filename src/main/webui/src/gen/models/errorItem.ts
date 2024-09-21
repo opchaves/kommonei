@@ -6,12 +6,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * Error message
- */
-export interface ErrorMessage {
-  /** Error message */
-  message?: string;
-  /** Path to the field that caused the error */
-  path?: string;
+export interface ErrorItem {
+  /** The field that caused the error */
+  field?: string;
+  /** The error message */
+  message: string;
 }

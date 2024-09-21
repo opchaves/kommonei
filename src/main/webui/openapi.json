@@ -404,22 +404,21 @@
           }
         }
       },
-      "ErrorMessage" : {
-        "description" : "Error message",
+      "ErrorItem" : {
+        "required" : [ "message" ],
         "type" : "object",
         "properties" : {
-          "path" : {
-            "description" : "Path to the field that caused the error",
+          "field" : {
+            "description" : "The field that caused the error",
             "type" : "string"
           },
           "message" : {
-            "description" : "Error message",
+            "description" : "The error message",
             "type" : "string"
           }
         }
       },
       "ErrorResponse" : {
-        "description" : "Error response",
         "type" : "object",
         "properties" : {
           "errorId" : {
@@ -427,28 +426,11 @@
             "type" : "string"
           },
           "errors" : {
-            "description" : "List of error messages",
+            "description" : "A list of errors",
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/ErrorMessage"
+              "$ref" : "#/components/schemas/ErrorItem"
             }
-          }
-        }
-      },
-      "ErrorResponse1" : {
-        "required" : [ "message", "status" ],
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "description" : "Error message",
-            "type" : "string",
-            "example" : "Email already taken"
-          },
-          "status" : {
-            "format" : "int32",
-            "description" : "HTTP status code",
-            "type" : "integer",
-            "example" : 400
           }
         }
       },
