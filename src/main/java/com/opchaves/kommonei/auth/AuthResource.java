@@ -24,7 +24,7 @@ import jakarta.ws.rs.core.Response;
 public class AuthResource {
 
   @Inject
-  PBKDF2Encoder encoder;
+  PasswordEncoder encoder;
 
   @ConfigProperty(name = "com.opchaves.kommonei.jwt.duration")
   private Long duration;
@@ -59,7 +59,7 @@ public class AuthResource {
   public Uni<AuthResponse> login(@Valid AuthRequest input) {
     return User.<User>find("email", input.getEmail()).firstResult()
         .onItem().ifNotNull().transform(u -> {
-          var matches = encoder.verify(input.getPassword(), u.password);
+          var matches = encoder.matches(input.getPassword(), u.password);
           if (!matches) {
             Log.warn("Invalid password for user " + u.email);
             throw new WebApplicationException("Invalid email or password", UNAUTHORIZED);
