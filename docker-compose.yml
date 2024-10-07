@@ -1,4 +1,23 @@
 services:
+  api:
+    image: opchaves/kommonei-jvm:latest
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+    depends_on:
+      - mongo
+    environment:
+      - QUARKUS_MONGODB_CONNECTION_STRING=mongodb://mongo:27017
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '1'
+          memory: 256M
+
   mongo:
     image: mongodb/mongodb-community-server:7.0.9-ubi8
     restart: always
@@ -11,6 +30,12 @@ services:
       test: test $$(mongosh --port 27017 --quiet --eval "try {rs.initiate({_id:'rs0',members:[{_id:0,host:\"mongo:27017\"}]})} catch(e) {rs.status().ok}") -eq 1
       interval: 10s
       start_period: 30s
+    networks:
+      - backend
 
 volumes:
   mongo:
+
+networks:
+  backend:
+    driver: bridge
