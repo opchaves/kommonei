@@ -99,8 +99,8 @@ export const getGetApiActivitiesMockHandler = (
 
 export const getPostApiActivitiesMockHandler = (
   overrideResponse?:
-    | unknown
-    | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<unknown> | unknown),
+    | void
+    | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void),
 ) => {
   return http.post('*/api/activities', async (info) => {
     await delay(1000);

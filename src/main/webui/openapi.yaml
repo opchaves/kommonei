@@ -72,8 +72,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json: {}
         "401":
           description: Not Authorized
         "403":

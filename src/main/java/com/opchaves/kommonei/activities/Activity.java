@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 
 import org.bson.types.ObjectId;
 
+import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import io.quarkus.mongodb.panache.common.MongoEntity;
-import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntity;
 
 @MongoEntity(collection = "activities")
-public class Activity extends ReactivePanacheMongoEntity {
+public class Activity extends PanacheMongoEntity {
   public String name;
   public String description;
   public Double price;

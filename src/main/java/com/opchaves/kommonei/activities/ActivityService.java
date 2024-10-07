@@ -2,12 +2,13 @@ package com.opchaves.kommonei.activities;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.WebApplicationException;
 
 @ApplicationScoped
 public class ActivityService {
@@ -18,59 +19,57 @@ public class ActivityService {
     this.activityMapper = activityMapper;
   }
 
-  public Uni<List<ActivityDTO>> listActivities() {
-    return Activity.<Activity>listAll().onItem().transform(activities -> {
-      return activities.stream().map(activityMapper::toDTO).toList();
-    });
+  public List<ActivityDTO> listActivities() {
+    return Activity.<Activity>listAll()
+        .stream()
+        .map(activityMapper::toDTO)
+        .toList();
   }
 
-  public Uni<List<ActivityDTO>> listUserActivities(Object userId) {
-    return Activity.<Activity>find("userId", userId).list().onItem().transform(activities -> {
-      return activities.stream().map(activityMapper::toDTO).toList();
-    });
+  public List<ActivityDTO> listUserActivities(Object userId) {
+    return Activity.<Activity>list("userId", userId)
+        .stream()
+        .map(activityMapper::toDTO)
+        .toList();
   }
 
-  public Uni<ActivityDTO> getActivty(ObjectId id) {
-    return Activity.<Activity>findById(id)
-        .onItem()
-        .ifNotNull()
-        .transform(activityMapper::toDTO);
+  public Optional<ActivityDTO> getActivty(String id) {
+    return Activity.<Activity>findByIdOptional(new ObjectId(id)).map(activityMapper::toDTO);
   }
 
-  public Uni<ActivityDTO> getActivity(ObjectId id, ObjectId userId) {
-    var query = new Document("_id", id).append("userId", userId);
-    return Activity.find(query)
-        .<Activity>firstResult()
-        .onItem().ifNotNull().transform(activityMapper::toDTO);
+  public Optional<ActivityDTO> getActivity(String id, String userId) {
+    var query = new Document("_id", new ObjectId(id))
+        .append("userId", new ObjectId(userId));
+    return Activity.<Activity>find(query)
+        .firstResultOptional()
+        .map(activityMapper::toDTO);
   }
 
-  public Uni<ActivityDTO> createActivity(ActivityDTO input, ObjectId userId) {
+  public ActivityDTO createActivity(ActivityDTO input, String userId) {
     var activity = activityMapper.toEntity(input);
-    activity.userId = userId;
+    activity.userId = new ObjectId(userId);
     activity.createdAt = LocalDateTime.now();
     activity.updatedAt = LocalDateTime.now();
-    return activity.<Activity>persist().onItem().transform(activityMapper::toDTO);
+    activity.persist();
+    return activityMapper.toDTO(activity);
   }
 
-  public Uni<ActivityDTO> updateActivity(ObjectId id, ActivityDTO input, ObjectId userId) {
-    var query = new Document("_id", id).append("userId", userId);
-    return Activity.find(query)
-        .<Activity>firstResult()
-        .onItem().ifNotNull().call(a -> {
+  public ActivityDTO updateActivity(ActivityDTO input, String id, String userId) {
+    return this.getActivity(id, userId)
+        .map(a -> {
           var activity = activityMapper.toEntity(input);
-
-          activity.id = a.id;
-          activity.userId = a.userId;
+          activity.id = new ObjectId(a.id);
+          activity.userId = new ObjectId(a.userId);
           activity.createdAt = a.createdAt;
           activity.updatedAt = LocalDateTime.now();
-
-          return activity.<Activity>update();
+          activity.persist();
+          return activityMapper.toDTO(activity);
         })
-        .onItem().transform(activityMapper::toDTO);
+        .orElseThrow(() -> new WebApplicationException("Activity not found", 404));
   }
 
-  public Uni<Boolean> deleteActivity(ObjectId id, ObjectId userId) {
-    var query = new Document("_id", id).append("userId", userId);
-    return Activity.delete(query).onItem().transform(deleted -> deleted > 0);
+  public void deleteActivity(String id, String userId) {
+    var query = new Document("_id", new ObjectId(id)).append("userId", new ObjectId(userId));
+    Activity.delete(query);
   }
 }

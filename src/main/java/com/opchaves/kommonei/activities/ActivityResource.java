@@ -18,7 +18,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import com.opchaves.kommonei.exception.ErrorExamples;
 import com.opchaves.kommonei.exception.ErrorResponse;
 
-import io.smallrye.mutiny.Uni;
+import io.smallrye.common.annotation.RunOnVirtualThread;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -33,6 +33,7 @@ import jakarta.ws.rs.core.Response;
 @Path("/api/activities")
 @Tag(name = "activities")
 @RequestScoped
+@RunOnVirtualThread
 public class ActivityResource {
 
   @Inject
@@ -50,46 +51,43 @@ public class ActivityResource {
   @Operation(summary = "List all activities for the current user")
   @APIResponse(responseCode = "200", description = "List of activities for the current user", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = ActivityDTO.class), examples = @ExampleObject(name = "activities", value = ActivityExamples.VALID_EXAMPLE_ACTIVITY_LIST)))
   @APIResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(name = "unauthorized", value = ErrorExamples.EXAMPLE_UNAUTHORIZED)))
-  public Uni<List<ActivityDTO>> listUserActivities() {
+  public List<ActivityDTO> listUserActivities() {
     return activityService.listUserActivities(new ObjectId(userId));
   }
 
   @GET
   @Path("all")
   @RolesAllowed("ADMIN")
-  public Uni<List<ActivityDTO>> listActivities() {
+  public List<ActivityDTO> listActivities() {
     return activityService.listActivities();
   }
 
   @GET
   @Path("{id}")
   @RolesAllowed("USER")
-  public Uni<ActivityDTO> getActivity(String id) {
-    return activityService.getActivity(new ObjectId(id), new ObjectId(userId)).onItem().ifNull()
-        .failWith(new WebApplicationException("Activity not found", 404));
+  public ActivityDTO getActivity(String id) {
+    return activityService
+      .getActivty(id)
+      .orElseThrow(() -> new WebApplicationException("Activity not found", 404));
   }
 
   @POST
   @RolesAllowed("USER")
-  public Uni<Response> createActivity(@Valid ActivityDTO input) {
-    return activityService.createActivity(input, new ObjectId(userId)).onItem()
-        .transform(activity -> {
-          URI uri = URI.create("/api/activities/" + activity.id);
-          return Response.created(uri).entity(activity).build();
-        });
+  public Response createActivity(@Valid ActivityDTO input) {
+    ActivityDTO dto = activityService.createActivity(input, userId);
+    URI uri = URI.create("/api/activities/" + dto.id);
+    return Response.created(uri).entity(dto).build();
   }
 
   @PUT
   @Path("{id}")
   @RolesAllowed("USER")
-  public Uni<ActivityDTO> updateActivity(String id, @Valid ActivityDTO input) {
-    return activityService.updateActivity(new ObjectId(id), input, new ObjectId(userId));
+  public ActivityDTO updateActivity(String id, @Valid ActivityDTO input) {
+    return activityService.updateActivity(input, id, userId);
   }
 
-  public Uni<Response> deleteActivity(String id) {
-    return activityService.deleteActivity(new ObjectId(id), new ObjectId(userId)).onItem()
-        .transform(deleted -> {
-          return Response.noContent().build();
-        });
+  public Response deleteActivity(String id) {
+    activityService.deleteActivity(id, userId);
+    return Response.noContent().build();
   }
 }

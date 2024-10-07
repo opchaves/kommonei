@@ -133,7 +133,7 @@ export function useGetApiActivities<
 }
 
 export const usePostApiActivitiesHook = () => {
-  const postApiActivities = useAxiosMutator<unknown>();
+  const postApiActivities = useAxiosMutator<void>();
 
   return useCallback(
     (activityDTO: ActivityDTO) => {
